@@ -1,0 +1,232 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 35 33% 96%; /* #f7f3ee */
+    --foreground: 30 12% 12%; /* #1f1b16 */
+    --card: 36 30% 97%; /* #faf6f1 */
+    --card-foreground: 30 12% 12%;
+    --popover: 36 30% 97%;
+    --popover-foreground: 30 12% 12%;
+    --primary: 168 28% 28%; /* #2f5d50 */
+    --primary-foreground: 36 30% 97%;
+    --secondary: 20 50% 47%; /* #c2613b */
+    --secondary-foreground: 36 30% 97%;
+    --muted: 30 12% 90%;
+    --muted-foreground: 30 8% 42%;
+    --accent: 35 24% 90%; /* #ebe2d6 */
+    --accent-foreground: 30 12% 12%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 18% 84%;
+    --input: 32 20% 88%;
+    --ring: 168 28% 28%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 25 10% 8%;
+    --foreground: 36 30% 95%;
+    --card: 25 10% 10%;
+    --card-foreground: 36 30% 95%;
+    --popover: 25 10% 10%;
+    --popover-foreground: 36 30% 95%;
+    --primary: 168 28% 42%;
+    --primary-foreground: 25 10% 8%;
+    --secondary: 20 55% 52%;
+    --secondary-foreground: 25 10% 8%;
+    --muted: 25 10% 18%;
+    --muted-foreground: 30 8% 62%;
+    --accent: 25 12% 18%;
+    --accent-foreground: 36 30% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 25 10% 18%;
+    --input: 25 10% 18%;
+    --ring: 168 28% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Poppins', system-ui, sans-serif;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(199, 164, 109, 0.18), transparent 60%),
+      radial-gradient(800px 500px at 0% 0%, rgba(47, 93, 80, 0.12), transparent 55%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+    background-attachment: fixed;
+  }
+  @supports (font-variation-settings: normal) {
+    body { font-family: 'Poppins', system-ui, sans-serif; }
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+  .text-shadow {
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  }
+  .text-shadow-lg {
+    text-shadow: 0px 2px 8px rgba(0,0,0,0.3);
+  }
+  .soft-shadow {
+    box-shadow: 0 12px 30px -18px hsl(var(--primary) / 0.45);
+  }
+  .glow-shadow {
+    box-shadow: 0 0 24px hsl(var(--secondary) / 0.25), 0 0 12px hsl(var(--primary) / 0.25);
+  }
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl shadow-lg dark:bg-black/30 dark:border-white/10;
+  }
+  .surface-card {
+    @apply bg-card text-card-foreground border border-border rounded-3xl shadow-[0_20px_50px_-35px_rgba(0,0,0,0.35)];
+  }
+  .section-frame {
+    @apply relative rounded-[2.5rem] border border-border/70 bg-white/70 backdrop-blur-md shadow-[0_30px_80px_-60px_rgba(0,0,0,0.45)];
+  }
+  .grain-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22 viewBox=%220 0 70 70%22%3E%3Cg fill=%22%23000000%22 fill-opacity=%220.04%22%3E%3Ccircle cx=%222%22 cy=%222%22 r=%221%22/%3E%3Ccircle cx=%2228%22 cy=%2218%22 r=%221%22/%3E%3Ccircle cx=%2246%22 cy=%2241%22 r=%221%22/%3E%3Ccircle cx=%2266%22 cy=%2250%22 r=%221%22/%3E%3Ccircle cx=%2239%22 cy=%2266%22 r=%221%22/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+}
+/* Glassy Navbar Styles */
+/* Add these styles to your global CSS or create a separate navbar.css */
+
+.glass-navbar {
+  background: rgba(248, 243, 234, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(31, 27, 22, 0.08);
+  box-shadow: 0 18px 40px rgba(26, 20, 14, 0.08);
+}
+
+.dark .glass-navbar {
+  background: rgba(15, 13, 10, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(47, 93, 80, 0.12);
+}
+
+.dark .glass-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Navbar Link Hover Effect */
+.nav-link {
+  position: relative;
+  padding: 0.5rem 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #2f5d50, #c2613b);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::before {
+  width: 80%;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 0.5rem;
+}
+
+/* Mobile Menu Glass Effect */
+.mobile-menu {
+  background: rgba(250, 246, 241, 0.98);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(31, 27, 22, 0.08);
+}
+
+.dark .mobile-menu {
+  background: rgba(0, 0, 0, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Showcase carousel polish */
+.showcase-slider .slick-dots {
+  bottom: -24px;
+}
+
+.showcase-slider .slick-dots li button:before {
+  font-size: 10px;
+  color: rgba(47, 93, 80, 0.45);
+  opacity: 1;
+}
+
+.showcase-slider .slick-dots li.slick-active button:before {
+  color: rgba(194, 97, 59, 0.9);
+}
+
+.showcase-slider .slick-prev,
+.showcase-slider .slick-next {
+  width: 44px;
+  height: 44px;
+  z-index: 1;
+}
+
+.showcase-slider .slick-prev:before,
+.showcase-slider .slick-next:before {
+  color: rgba(31, 27, 22, 0.8);
+  font-size: 34px;
+}
+
+.showcase-slider .slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.showcase-slider .slick-slide {
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  opacity: 0.6;
+  transform: scale(0.94);
+}
+
+.showcase-slider .slick-slide.slick-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Amenities glass hover */
+.glassy-amenity {
+  border-radius: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 24px 50px -40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(14px);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+}
+
+.glassy-amenity:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 32px 70px -45px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.75);
+}
