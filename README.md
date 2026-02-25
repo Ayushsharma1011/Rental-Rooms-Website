@@ -80,8 +80,5 @@ npm run preview
 - Structured data (`LodgingBusiness`) added via JSON-LD
 - `sitemap.xml` and `robots.txt` available
 
-## Contact
 
-- Phone: +91-9816446709
-- Address: Gokhle Marg, Depot-Bazar Rd, Dharamshala, Himachal Pradesh, 176215
 
