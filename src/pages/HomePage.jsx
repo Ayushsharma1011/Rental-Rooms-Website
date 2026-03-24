@@ -297,13 +297,13 @@ const HomePage = () => {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
-useEffect(() => {
-  const interval = setInterval(() => {
-    setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-  }, 6000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 6000);
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
 
   const ref = useRef(null);
@@ -436,8 +436,7 @@ useEffect(() => {
         />
       </Helmet>
 
-     {/* HERO */}
-     
+      {/* ===================== HERO ===================== */}
 <section
   ref={ref}
   className="
@@ -471,15 +470,15 @@ useEffect(() => {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Base alpine gradient tint */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1f2a24]/70 via-[#2f3f35]/60 to-[#4b5c4a]/45" />
+      {/* ✅ UPDATED: Alpine base gradient — reduced opacity so mountain shows through brighter */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1f2a24]/40 via-[#2f3f35]/30 to-[#4b5c4a]/20" />
 
-      {/* Soft warm overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/20" />
+      {/* ✅ UPDATED: Warm vertical overlay — reduced from /80 /45 /20 to /50 /20 /5 */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-black/5" />
 
-      {/* Subtle ambient light */}
+      {/* ✅ UPDATED: Ambient light pulse — increased brightness from [0.15,0.25,0.15] to [0.25,0.45,0.25] */}
       <motion.div
-        animate={{ opacity: [0.15, 0.25, 0.15] }}
+        animate={{ opacity: [0.25, 0.45, 0.25] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 bg-gradient-radial from-white/12 via-transparent to-transparent"
       />
@@ -810,7 +809,7 @@ useEffect(() => {
                   />
 
                   <p className="text-sm sm:text-lg italic text-foreground/80 mb-4">
-                    “{approvedTestimonials[testimonialIndex].text}”
+                    "{approvedTestimonials[testimonialIndex].text}"
                   </p>
 
                   <p className="font-bold text-secondary text-sm sm:text-base">
