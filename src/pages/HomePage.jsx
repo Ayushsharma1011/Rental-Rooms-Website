@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
@@ -17,7 +17,6 @@ import {
   Star,
   MessageSquare,
   Send,
-  X,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,6 +31,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
+import { getYouTubeEmbedUrl } from '@/lib/siteContent';
 
 import { useData } from '@/contexts/DataContext';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -46,9 +46,11 @@ const IconWrapper = ({ name, ...props }) => {
 /* ========================= ROOM DETAIL MODAL ========================= */
 const RoomDetailModal = ({ room, open, onOpenChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
 
   useEffect(() => {
     setCurrentImageIndex(0);
+    setShowAllAmenities(false);
   }, [room]);
 
   if (!room) return null;
@@ -64,32 +66,36 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
   const prevImage = () =>
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
 
+  const visibleAmenities = showAllAmenities
+    ? room.amenities || []
+    : (room.amenities || []).slice(0, 4);
+  const capacityValue = `${room.capacity || "N/A"}`
+    .replace(/adults?/gi, "")
+    .trim();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {/* ✅ Fully responsive Dialog */}
       <DialogContent
         className="
-          w-[95vw] sm:w-[90vw] max-w-4xl 
-          p-0 bg-card border-border/60
-          max-h-[90vh] overflow-hidden
-          rounded-3xl
+          w-[97vw] sm:w-[94vw] max-w-6xl
+          p-0 overflow-hidden
+          max-h-[92vh]
+          rounded-[2rem]
+          border border-border/60
+          bg-gradient-to-br from-background via-background to-muted/40
+          shadow-[0_30px_120px_-40px_rgba(0,0,0,0.45)]
         "
       >
         {/* ✅ Scrollable container inside modal */}
-        <div className="relative max-h-[90vh] overflow-y-auto">
+        <div className="relative max-h-[92vh] overflow-y-auto">
           
           {/* ✅ Close button ALWAYS visible */}
-          <button
-            onClick={() => onOpenChange(false)}
-            className="absolute top-3 right-3 z-50 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full"
-          >
-            <X className="h-5 w-5" />
-          </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-1 xl:grid-cols-[1.05fr_1.2fr]">
             
             {/* ✅ Image Section (Responsive Height) */}
-            <div className="relative h-64 sm:h-72 md:h-full">
+            <div className="relative h-72 sm:h-80 xl:min-h-[760px]">
               <AnimatePresence initial={false} mode="wait">
                 <motion.img
                   key={currentImageIndex}
@@ -102,6 +108,8 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </AnimatePresence>
+
+              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/50 to-transparent" />
 
               {images.length > 1 && (
                 <>
@@ -127,13 +135,13 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
             </div>
 
             {/* ✅ Content Section */}
-            <div className="p-5 sm:p-7 md:p-8 flex flex-col">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold font-display text-secondary mb-2">
+            <div className="flex flex-col p-5 sm:p-7 lg:p-10">
+              <h2 className="mb-3 text-2xl font-bold leading-tight text-secondary sm:text-3xl lg:text-4xl font-display">
                 {room.name}
               </h2>
 
               <div
-                className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold text-white self-start mb-4 ${
+                className={`mb-4 inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-white ${
                   room.availability === "Available"
                     ? "bg-green-500"
                     : "bg-red-500"
@@ -142,47 +150,76 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
                 {room.availability}
               </div>
 
-              <p className="text-muted-foreground mb-6 text-sm sm:text-base leading-relaxed">
+              <p className="max-w-3xl text-sm leading-8 text-muted-foreground sm:text-base">
                 {room.description}
               </p>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3 text-sm sm:text-base">
-                  <Users className="h-5 w-5 text-primary" />
-                  <span>Capacity: {room.capacity || "N/A"} people</span>
+              <div className="space-y-6 mb-6">
+                <div className="rounded-3xl border border-border/60 bg-background/80 p-4 shadow-sm sm:p-5">
+                  <div className="flex items-center gap-3 text-sm sm:text-base">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <Users className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        Capacity
+                      </p>
+                    <p className="text-base font-semibold text-foreground sm:text-lg">
+                      {capacityValue} Adults
+                    </p>
+                    </div>
+                  </div>
                 </div>
 
                 {room.amenities && room.amenities.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold mb-2 text-secondary">
-                      Amenities:
+                  <div className="rounded-3xl border border-border/60 bg-muted/30 p-4 sm:p-6">
+                    <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-secondary/90">
+                      Amenities
                     </h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {room.amenities.map((amenity) => (
+                    <div className="grid grid-cols-1 gap-3">
+                      {visibleAmenities.map((amenity) => (
                         <div
                           key={amenity.id}
-                          className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground"
+                          className="flex items-start gap-3 rounded-2xl border border-border/50 bg-background/85 px-4 py-3.5 shadow-sm"
                         >
-                          <IconWrapper
-                            name={amenity.icon_name}
-                            className="h-4 w-4 text-primary"
-                          />
-                          <span>{amenity.name}</span>
+                          <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                            <IconWrapper
+                              name={amenity.icon_name}
+                              className="h-4 w-4"
+                            />
+                          </div>
+                          <span className="text-sm leading-7 text-foreground/85 sm:text-[15px]">
+                            {amenity.name}
+                          </span>
                         </div>
                       ))}
                     </div>
+                    {room.amenities.length > 4 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowAllAmenities((prev) => !prev)}
+                        className="mt-4 text-sm font-semibold text-secondary transition-colors hover:text-secondary/80"
+                      >
+                        {showAllAmenities ? 'Show less' : 'Read more'}
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
 
               {/* ✅ Bottom section responsive */}
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-auto pt-5 border-t">
-                <p className="text-2xl sm:text-3xl font-bold">
+              <div className="mt-6 flex flex-col gap-4 rounded-3xl border border-border/60 bg-background/80 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div>
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Monthly Rent
+                  </p>
+                  <p className="text-3xl font-bold sm:text-4xl">
                   ₹{room.price}
-                  <span className="text-sm font-normal text-muted-foreground">
+                  <span className="ml-1 text-sm font-normal text-muted-foreground">
                     /Month
                   </span>
-                </p>
+                  </p>
+                </div>
 
                 <Button
                   onClick={() => {
@@ -194,7 +231,7 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
                     );
                     onOpenChange(false);
                   }}
-                  className="soft-shadow hover:glow-shadow w-full sm:w-auto rounded-full bg-secondary text-secondary-foreground"
+                  className="soft-shadow hover:glow-shadow h-12 w-full rounded-full bg-secondary px-6 text-secondary-foreground sm:w-auto"
                 >
                   Enquire on WhatsApp
                 </Button>
@@ -287,6 +324,17 @@ const HomePage = () => {
     siteContent,
     loading,
   } = useData();
+  const heroTitle =
+    siteContent?.hero_title || 'Comfortable and Affordable Accommodations for Every Need';
+  const heroSubtitle =
+    siteContent?.hero_subtitle ||
+    'Stay close to the mountains, connected to comfort, and surrounded by calm.';
+  const youtubeSectionTitle =
+    siteContent?.youtube_channel_title || 'Watch Cozy Way On YouTube';
+  const youtubeSectionDescription =
+    siteContent?.youtube_channel_description ||
+    'Room tours, local highlights, and stay updates will appear here once your YouTube link is added.';
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(siteContent?.youtube_channel_embed_url);
 
   const heroImages = [
     { url: '/ViewfromCozyWay.JPG.jpeg', alt: 'View from Cozy Way with mountains' },
@@ -297,12 +345,25 @@ const HomePage = () => {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [activeShowcaseSlide, setActiveShowcaseSlide] = useState(0);
+  const [activeGallerySlide, setActiveGallerySlide] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 6000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const updateViewport = () => {
+      setIsMobileView(window.innerWidth < 640);
+    };
+
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
   }, []);
 
 
@@ -340,29 +401,68 @@ const HomePage = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
 
   const gallerySettings = {
-    dots: true,
-    infinite: true,
+    dots: !isMobileView,
+    infinite: galleryImages.length > 1,
     speed: 600,
-    slidesToShow: 3,
+    slidesToShow: isMobileView ? 1 : Math.min(galleryImages.length, 3) || 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: galleryImages.length > 1,
     autoplaySpeed: 3000,
-    arrows: true,
+    arrows: !isMobileView,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    beforeChange: (_, next) => setActiveGallerySlide(next),
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
+      { breakpoint: 1024, settings: { slidesToShow: Math.min(galleryImages.length, 2) || 1 } },
+      { breakpoint: 640, settings: { slidesToShow: 1, arrows: false } },
     ],
   };
 
-  const showcaseSlides = [
-    { id: 'showcase-1', url: '/ViewfromCozyWay.JPG.jpeg', alt: 'View from Cozy Way with hills' },
-    { id: 'showcase-2', url: '/DSCN1704.JPG.jpeg', alt: 'Building exterior at Cozy Way' },
-    { id: 'showcase-3', url: '/DSCN1706.JPG.jpeg', alt: 'Property view from side angle' },
-    { id: 'showcase-4', url: '/DSCN1710.JPG.jpeg', alt: 'Front side of the property' },
-    { id: 'showcase-5', url: '/DSCN1725.JPG.jpeg', alt: 'Room corridor and clean interiors' },
-    { id: 'showcase-6', url: '/Moon Peak.JPG.jpeg', alt: 'Nearby mountain view' },
-    { id: 'showcase-7', url: '/Triund.JPG.jpeg', alt: 'Triund scenic view' },
-  ];
+  const showcaseSlides = useMemo(() => {
+    const showcaseGalleryImages = galleryImages.filter((image) =>
+      ['showcase', 'home-showcase', 'homepage-showcase'].includes(
+        String(image.category || '').toLowerCase()
+      )
+    );
+
+    if (showcaseGalleryImages.length > 0) {
+      return showcaseGalleryImages.map((image) => ({
+        id: image.id,
+        url: image.url,
+        alt: image.alt || 'Cozy Way showcase image',
+      }));
+    }
+
+    return [
+      { id: 'showcase-1', url: '/ViewfromCozyWay.JPG.jpeg', alt: 'View from Cozy Way with hills' },
+      { id: 'showcase-2', url: '/DSCN1704.JPG.jpeg', alt: 'Building exterior at Cozy Way' },
+      { id: 'showcase-3', url: '/DSCN1706.JPG.jpeg', alt: 'Property view from side angle' },
+      { id: 'showcase-4', url: '/DSCN1710.JPG.jpeg', alt: 'Front side of the property' },
+      { id: 'showcase-5', url: '/DSCN1725.JPG.jpeg', alt: 'Room corridor and clean interiors' },
+      { id: 'showcase-6', url: '/Moon Peak.JPG.jpeg', alt: 'Nearby mountain view' },
+      { id: 'showcase-7', url: '/Triund.JPG.jpeg', alt: 'Triund scenic view' },
+    ];
+  }, [galleryImages]);
+
+  const showcaseSettings = {
+    infinite: true,
+    speed: 900,
+    slidesToShow: isMobileView ? 1 : Math.min(showcaseSlides.length, 3),
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2600,
+    arrows: false,
+    dots: !isMobileView,
+    cssEase: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    adaptiveHeight: false,
+    beforeChange: (_, next) => setActiveShowcaseSlide(next),
+    responsive: [
+      { breakpoint: 1280, settings: { slidesToShow: Math.min(showcaseSlides.length, 2) } },
+      { breakpoint: 900, settings: { slidesToShow: 1, dots: false } },
+    ],
+  };
 
   const approvedTestimonials = testimonials.filter((t) => t.status === 'approved');
   const [testimonialIndex, setTestimonialIndex] = useState(0);
@@ -518,7 +618,7 @@ const HomePage = () => {
       {loading ? (
         <Loader2 className="h-10 w-10 animate-spin mx-auto" />
       ) : (
-        "Comfortable and Affordable Accommodations for Every Need"
+        heroTitle
       )}
     </motion.h1>
 
@@ -528,7 +628,7 @@ const HomePage = () => {
       transition={{ duration: 0.7, delay: 0.45 }}
       className="max-w-3xl text-sm sm:text-lg md:text-xl text-white/95 mb-3 sm:mb-4 text-shadow-lg"
     >
-      Stay close to the mountains, connected to comfort, and surrounded by calm.
+      {heroSubtitle}
     </motion.p>
 
     <motion.p
@@ -583,43 +683,34 @@ const HomePage = () => {
                 <Loader2 className="h-10 w-10 sm:h-12 sm:w-12 animate-spin text-primary" />
               </div>
             ) : showcaseSlides.length > 0 ? (
-              <Slider
-                className="showcase-track"
-                infinite
-                speed={800}
-                slidesToShow={3}
-                slidesToScroll={1}
-                centerMode={false}
-                centerPadding="0%"
-                autoplay
-                autoplaySpeed={2400}
-                arrows={false}
-                dots={false}
-                cssEase="cubic-bezier(0.22, 0.61, 0.36, 1)"
-                pauseOnHover={false}
-                responsive={[
-                  { breakpoint: 1280, settings: { slidesToShow: 2 } },
-                  { breakpoint: 900, settings: { slidesToShow: 1 } },
-                ]}
-              >
-                {showcaseSlides.map((slide) => (
-                  <div key={slide.id} className="px-2 sm:px-3">
-                    <div className="relative overflow-hidden rounded-[2.5rem] border border-white/60 bg-white/70 shadow-[0_35px_80px_-50px_rgba(0,0,0,0.55)]">
-                      <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-secondary/20 blur-3xl" />
-                      <div className="absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
-                      <div className="relative w-full aspect-[4/5]">
-                        <img
-                          src={slide.url}
-                          alt={slide.alt}
-                          className="absolute inset-0 h-full w-full object-cover"
-                        />
+              <>
+                <Slider className="showcase-track" {...showcaseSettings}>
+                  {showcaseSlides.map((slide) => (
+                    <div key={slide.id} className="showcase-slide px-2 sm:px-3">
+                      <div className="showcase-card relative h-[17.5rem] sm:h-[26rem] lg:h-[30rem] overflow-hidden rounded-[1.75rem] sm:rounded-[2.5rem] border border-white/60 bg-white/70 shadow-[0_35px_80px_-50px_rgba(0,0,0,0.55)]">
+                        <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-secondary/20 blur-3xl" />
+                        <div className="absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
+                        <div className="relative h-full w-full">
+                          <img
+                            src={slide.url}
+                            alt={slide.alt}
+                            className="absolute inset-0 h-full w-full object-cover object-center"
+                          />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25" />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25" />
+                    </div>
+                  ))}
+                </Slider>
+                {isMobileView && showcaseSlides.length > 1 && (
+                  <div className="mt-4 flex justify-center">
+                    <div className="rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-secondary shadow-sm">
+                      {activeShowcaseSlide + 1} / {showcaseSlides.length}
                     </div>
                   </div>
-                ))}
-              </Slider>
+                )}
+              </>
             ) : (
               <p className="text-center text-muted-foreground py-6">
                 Showcase images not available right now.
@@ -723,6 +814,50 @@ const HomePage = () => {
         </div>
       </section>
 
+      <section className="py-3 sm:py-6 lg:py-8">
+        <div className="container mx-auto px-4">
+          <div className="section-frame overflow-hidden px-6 py-10 sm:px-10 sm:py-12">
+            <div className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-secondary/80">
+                  YouTube Channel
+                </p>
+                <h2 className="mt-3 text-2xl font-bold text-secondary sm:text-4xl font-display">
+                  {youtubeSectionTitle}
+                </h2>
+                <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
+                  {youtubeSectionDescription}
+                </p>
+              </div>
+
+              <div className="overflow-hidden rounded-[2rem] border border-white/60 bg-white/60 p-3 shadow-[0_28px_70px_-45px_rgba(0,0,0,0.45)] backdrop-blur">
+                <div className="aspect-video overflow-hidden rounded-[1.5rem] bg-foreground/95">
+                  {youtubeEmbedUrl ? (
+                    <iframe
+                      src={youtubeEmbedUrl}
+                      title="Cozy Way YouTube channel"
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <div className="flex h-full flex-col items-center justify-center px-6 text-center text-white">
+                      <p className="text-lg font-semibold font-display sm:text-2xl">
+                        YouTube showcase coming soon
+                      </p>
+                      <p className="mt-3 max-w-md text-sm text-white/70 sm:text-base">
+                        Add a YouTube link from the admin panel to display your room tours and
+                        channel videos here.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* GLIMPSES OF PARADISE */}
       <section className="py-3 sm:py-6 lg:py-8">
         <div className="container mx-auto px-4">
@@ -742,10 +877,10 @@ const HomePage = () => {
             </div>
           ) : galleryImages.length > 0 ? (
             <>
-              <Slider {...gallerySettings}>
+              <Slider className="home-gallery-slider" {...gallerySettings}>
                 {galleryImages.map((img) => (
                   <div key={img.id} className="px-2 sm:px-3">
-                    <div className="overflow-hidden rounded-2xl h-56 sm:h-72 group cursor-pointer shadow-lg">
+                    <div className="home-gallery-card overflow-hidden rounded-[1.4rem] sm:rounded-2xl h-64 sm:h-72 group cursor-pointer shadow-lg">
                       <img
                         src={img.url}
                         alt={img.alt}
@@ -755,6 +890,14 @@ const HomePage = () => {
                   </div>
                 ))}
               </Slider>
+
+              {isMobileView && galleryImages.length > 1 && (
+                <div className="mt-4 flex justify-center">
+                  <div className="rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-secondary shadow-sm">
+                    {activeGallerySlide + 1} / {galleryImages.length}
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-center mt-12 sm:mt-14">
                 <Button

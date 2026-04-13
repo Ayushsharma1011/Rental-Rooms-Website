@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/customSupabaseClient';
+import { SITE_CONTENT_DEFAULTS } from '@/lib/siteContent';
 
 const DataContext = createContext();
 
@@ -60,7 +61,7 @@ export const DataProvider = ({ children }) => {
                 acc[item.element_key] = item.content;
                 return acc;
             }, {});
-            setSiteContent(contentMap);
+            setSiteContent({ ...SITE_CONTENT_DEFAULTS, ...contentMap });
             
             if (amenitiesRes.error) throw amenitiesRes.error;
             setAmenities(amenitiesRes.data);

@@ -11,7 +11,6 @@ import {
   Wind,
   Sparkles,
   Users,
-  X,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -28,9 +27,11 @@ const IconWrapper = ({ name, ...props }) => {
 /* ✅ RESPONSIVE ROOM DETAIL MODAL */
 const RoomDetailModal = ({ room, open, onOpenChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
 
   useEffect(() => {
     setCurrentImageIndex(0);
+    setShowAllAmenities(false);
   }, [room]);
 
   if (!room) return null;
@@ -46,29 +47,33 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
   const prevImage = () =>
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
 
+  const visibleAmenities = showAllAmenities
+    ? room.amenities || []
+    : (room.amenities || []).slice(0, 4);
+  const capacityValue = `${room.capacity || "N/A"}`
+    .replace(/adults?/gi, "")
+    .trim();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="
-          w-[95vw] sm:w-[90vw] max-w-4xl
-          p-0 bg-card border-border/60
-          max-h-[90vh] overflow-hidden
-          rounded-3xl
+          w-[97vw] sm:w-[94vw] max-w-6xl
+          p-0 overflow-hidden
+          max-h-[92vh]
+          rounded-[2rem]
+          border border-border/60
+          bg-gradient-to-br from-background via-background to-muted/40
+          shadow-[0_30px_120px_-40px_rgba(0,0,0,0.45)]
         "
       >
         {/* ✅ Scroll container */}
-        <div className="relative max-h-[90vh] overflow-y-auto">
+        <div className="relative max-h-[92vh] overflow-y-auto">
           {/* ✅ Always visible close button */}
-          <button
-            onClick={() => onOpenChange(false)}
-            className="absolute top-3 right-3 z-50 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full"
-          >
-            <X className="h-5 w-5" />
-          </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-1 xl:grid-cols-[1.05fr_1.2fr]">
             {/* ✅ Responsive Image */}
-            <div className="relative h-64 sm:h-72 md:h-full">
+            <div className="relative h-72 sm:h-80 xl:min-h-[760px]">
               <AnimatePresence initial={false} mode="wait">
                 <motion.img
                   key={currentImageIndex}
@@ -81,6 +86,8 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </AnimatePresence>
+
+              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/50 to-transparent" />
 
               {images.length > 1 && (
                 <>
@@ -106,57 +113,88 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
             </div>
 
             {/* ✅ Responsive Content */}
-            <div className="p-5 sm:p-7 md:p-8 flex flex-col">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold font-display text-secondary mb-2">
+            <div className="flex flex-col p-5 sm:p-7 lg:p-10">
+              <h2 className="mb-3 text-2xl font-bold leading-tight text-secondary sm:text-3xl lg:text-4xl font-display">
                 {room.name}
               </h2>
 
               <div
-                className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold text-white self-start mb-4 ${
+                className={`mb-4 inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-white ${
                   room.availability === "Available" ? "bg-green-500" : "bg-red-500"
                 }`}
               >
                 {room.availability}
               </div>
 
-              <p className="text-muted-foreground mb-6 text-sm sm:text-base leading-relaxed">
+              <p className="max-w-3xl text-sm leading-8 text-muted-foreground sm:text-base">
                 {room.description}
               </p>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3 text-sm sm:text-base">
-                  <Users className="h-5 w-5 text-primary" />
-                  <span>Capacity: {room.capacity || "N/A"} people</span>
+              <div className="space-y-6 mb-6">
+                <div className="rounded-3xl border border-border/60 bg-background/80 p-4 shadow-sm sm:p-5">
+                  <div className="flex items-center gap-3 text-sm sm:text-base">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <Users className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        Capacity
+                      </p>
+                    <p className="text-base font-semibold text-foreground sm:text-lg">
+                      {capacityValue} Adults
+                    </p>
+                    </div>
+                  </div>
                 </div>
 
                 {room.amenities && room.amenities.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold mb-2 text-secondary">Amenities:</h4>
+                  <div className="rounded-3xl border border-border/60 bg-muted/30 p-4 sm:p-6">
+                    <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-secondary/90">
+                      Amenities
+                    </h4>
 
-                    <div className="grid grid-cols-2 gap-2">
-                      {room.amenities.map((amenity) => (
+                    <div className="grid grid-cols-1 gap-3">
+                      {visibleAmenities.map((amenity) => (
                         <div
                           key={amenity.id}
-                          className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground"
+                          className="flex items-start gap-3 rounded-2xl border border-border/50 bg-background/85 px-4 py-3.5 shadow-sm"
                         >
-                          <IconWrapper
-                            name={amenity.icon_name}
-                            className="h-4 w-4 text-primary"
-                          />
-                          <span>{amenity.name}</span>
+                          <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                            <IconWrapper
+                              name={amenity.icon_name}
+                              className="h-4 w-4"
+                            />
+                          </div>
+                          <span className="text-sm leading-7 text-foreground/85 sm:text-[15px]">
+                            {amenity.name}
+                          </span>
                         </div>
                       ))}
                     </div>
+                    {room.amenities.length > 4 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowAllAmenities((prev) => !prev)}
+                        className="mt-4 text-sm font-semibold text-secondary transition-colors hover:text-secondary/80"
+                      >
+                        {showAllAmenities ? "Show less" : "Read more"}
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
 
               {/* ✅ Responsive bottom */}
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-auto pt-5 border-t">
-                <p className="text-2xl sm:text-3xl font-bold">
+              <div className="mt-6 flex flex-col gap-4 rounded-3xl border border-border/60 bg-background/80 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div>
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Monthly Rent
+                  </p>
+                  <p className="text-3xl font-bold sm:text-4xl">
                   ₹{room.price}
-                  <span className="text-sm font-normal text-muted-foreground">/Month</span>
-                </p>
+                    <span className="ml-1 text-sm font-normal text-muted-foreground">/Month</span>
+                  </p>
+                </div>
 
                 <Button
                   onClick={() => {
@@ -165,7 +203,7 @@ const RoomDetailModal = ({ room, open, onOpenChange }) => {
                     window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
                     onOpenChange(false);
                   }}
-                  className="soft-shadow hover:glow-shadow w-full sm:w-auto rounded-full bg-secondary text-secondary-foreground"
+                  className="soft-shadow hover:glow-shadow h-12 w-full rounded-full bg-secondary px-6 text-secondary-foreground sm:w-auto"
                 >
                   Enquire Now
                 </Button>

@@ -79,7 +79,13 @@ const ManageGallery = () => {
                 <div className="p-4 border border-dashed border-gray-500 rounded-lg mb-8 space-y-4">
                     <h3 className="text-lg font-semibold">Upload New Image</h3>
                     <div><Label htmlFor="alt">Alt Text</Label><Input id="alt" value={altText} onChange={e => setAltText(e.target.value)} placeholder="Descriptive text for the image" /></div>
-                    <div><Label htmlFor="category">Category</Label><Input id="category" value={category} onChange={e => setCategory(e.target.value)} placeholder="e.g., interior, exterior, nature" /></div>
+                    <div>
+                        <Label htmlFor="category">Category</Label>
+                        <Input id="category" value={category} onChange={e => setCategory(e.target.value)} placeholder="e.g., showcase, interior, exterior, nature" />
+                        <p className="mt-2 text-sm text-muted-foreground">
+                            Use category <strong>showcase</strong> for the "Rooms &amp; Places, In Focus" photos on the home page.
+                        </p>
+                    </div>
                     <div><Label htmlFor="file">Image File</Label><Input id="file" type="file" onChange={handleFileChange} accept="image/*" /></div>
                     <Button onClick={handleUpload} disabled={uploading}>
                         {uploading ? <Loader2 className="animate-spin mr-2" /> : <Upload className="mr-2 h-4 w-4" />}

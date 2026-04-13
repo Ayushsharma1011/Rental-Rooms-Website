@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Instagram, Facebook, LogIn } from 'lucide-react';
+import LogoLightbox from '@/components/shared/LogoLightbox';
 
 const Footer = () => {
   const footerLinks = [
     { name: 'About', path: '/about' },
+    { name: 'Our Journey', path: '/our-journey' },
     { name: 'Contact', path: '/contact' },
     { name: 'Privacy Policy', path: '/privacy-policy' },
     { name: 'Terms & Conditions', path: '/terms-and-conditions' },
@@ -26,65 +28,52 @@ const Footer = () => {
   return (
     <footer className="bg-foreground text-background dark:bg-background dark:text-foreground">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* LOGO + ABOUT */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-1">
-            <NavLink
-              to="/"
-              className="flex items-center gap-3 text-xl font-bold font-display mb-4"
-            >
-              {/* ✅ LOGO INSTEAD OF MOUNTAIN */}
-              <div className="h-12 w-20 bg-white/10 rounded-xl flex items-center justify-center p-1 ring-1 ring-white/20">
-                <img
-                  src="/logo.jpg"
-                  alt="Cozy Way Logo"
-                  className="h-full w-full object-contain"
-                />
-              </div>
+            <div className="mb-4 flex items-center gap-3 text-xl font-bold font-display">
+              <LogoLightbox
+                containerClassName="flex h-12 w-20 items-center justify-center rounded-xl bg-white/10 p-1 ring-1 ring-white/20"
+                imageClassName="h-full w-full object-contain"
+                alt="Cozy Way Logo"
+              />
+              <NavLink to="/" className="text-2xl">
+                Cozy Way
+              </NavLink>
+            </div>
 
-              <span className="text-2xl">Cozy Way</span>
-            </NavLink>
-
-            <p className="text-sm text-white/70 leading-relaxed">
+            <p className="text-sm leading-relaxed text-white/70">
               Looking for a hassle-free place to stay? Our rental rooms offer comfort, style,
               and convenience for students, travelers, and professionals alike.
             </p>
           </div>
 
-          {/* LINKS */}
-          <div className="md:col-span-2 grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-8 md:col-span-2">
             <div>
-              <p className="font-bold text-white mb-4">Explore</p>
+              <p className="mb-4 font-bold text-white">Explore</p>
               <nav className="flex flex-col gap-2">
-                <NavLink
-                  to="/rooms"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
+                <NavLink to="/rooms" className="text-white/70 transition-colors hover:text-white">
                   Rooms
                 </NavLink>
                 <NavLink
                   to="/nearby-spots"
-                  className="text-white/70 hover:text-white transition-colors"
+                  className="text-white/70 transition-colors hover:text-white"
                 >
                   Nearby Spots
                 </NavLink>
-                <NavLink
-                  to="/gallery"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
+                <NavLink to="/gallery" className="text-white/70 transition-colors hover:text-white">
                   Gallery
                 </NavLink>
               </nav>
             </div>
 
             <div>
-              <p className="font-bold text-white mb-4">Company</p>
+              <p className="mb-4 font-bold text-white">Company</p>
               <nav className="flex flex-col gap-2">
                 {footerLinks.map((link) => (
                   <NavLink
                     key={link.name}
                     to={link.path}
-                    className="text-white/70 hover:text-white transition-colors"
+                    className="text-white/70 transition-colors hover:text-white"
                   >
                     {link.name}
                   </NavLink>
@@ -93,15 +82,14 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* SOCIALS */}
           <div className="md:col-span-1">
-            <p className="font-bold text-white mb-4">Follow Us</p>
+            <p className="mb-4 font-bold text-white">Follow Us</p>
             <div className="flex gap-4">
               {socialLinks.map((link, index) => (
                 <a
                   key={index}
                   href={link.href}
-                  className="text-white/70 hover:text-white transition-colors"
+                  className="text-white/70 transition-colors hover:text-white"
                   target="_blank"
                   rel="noreferrer"
                   aria-label={link.label}
@@ -113,15 +101,14 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* BOTTOM BAR */}
-        <div className="mt-12 border-t border-white/20 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/60">
-          <p className="text-sm text-white/60 text-center sm:text-left">
-            (c) 2026 Cozy Way | Built by{" "}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-8 text-sm text-white/60 sm:flex-row">
+          <p className="text-center text-sm text-white/60 sm:text-left">
+            (c) 2026 Cozy Way | Built by{' '}
             <a
               href="https://www.synergyayush.com"
               target="_blank"
               rel="noreferrer"
-              className="text-white/80 hover:text-white underline underline-offset-4 transition-colors"
+              className="text-white/80 underline underline-offset-4 transition-colors hover:text-white"
             >
               SynergyAyush
             </a>
@@ -129,7 +116,7 @@ const Footer = () => {
 
           <NavLink
             to="/admin"
-            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-white/70 transition-colors hover:text-white"
           >
             <LogIn size={16} />
             <span>Admin Login</span>

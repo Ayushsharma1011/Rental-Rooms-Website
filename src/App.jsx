@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
+import WebsiteChatbot from '@/components/shared/WebsiteChatbot';
 import HomePage from '@/pages/HomePage';
 import RoomsPage from '@/pages/RoomsPage';
 import GalleryPage from '@/pages/GalleryPage';
@@ -14,6 +15,7 @@ import ContactPage from '@/pages/ContactPage';
 import AboutPage from '@/pages/AboutPage';
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
 import TermsPage from '@/pages/TermsPage';
+import OurJourneyPage from '@/pages/OurJourneyPage';
 import NearbySpotsPage from '@/pages/NearbySpotsPage';
 import AdminPage from '@/pages/AdminPage';
 import AdminDashboard from '@/pages/AdminDashboard';
@@ -48,6 +50,7 @@ function AppContent() {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/our-journey" element={<OurJourneyPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/terms-and-conditions" element={<TermsPage />} />
               <Route path="/nearby-spots" element={<NearbySpotsPage />} />
@@ -68,6 +71,7 @@ function AppContent() {
           </AnimatePresence>
         </main>
         <Footer />
+        <WebsiteChatbot />
         <Toaster />
       </div>
     </div>

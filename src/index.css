@@ -203,15 +203,81 @@
   align-items: center;
 }
 
+.showcase-slider .slick-list {
+  margin: 0 -0.35rem;
+}
+
 .showcase-slider .slick-slide {
   transition: transform 0.6s ease, opacity 0.6s ease;
   opacity: 0.6;
   transform: scale(0.94);
+  height: inherit;
+}
+
+.showcase-slider .slick-slide > div {
+  height: 100%;
 }
 
 .showcase-slider .slick-slide.slick-active {
   opacity: 1;
   transform: scale(1);
+}
+
+.showcase-slide {
+  height: 100%;
+}
+
+.showcase-card {
+  height: 20rem;
+}
+
+@media (min-width: 640px) {
+  .showcase-card {
+    height: 26rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .showcase-card {
+    height: 30rem;
+  }
+}
+
+.home-gallery-slider .slick-slide > div {
+  height: 100%;
+}
+
+.home-gallery-slider .slick-dots {
+  bottom: -28px;
+}
+
+.home-gallery-slider .slick-prev,
+.home-gallery-slider .slick-next {
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .showcase-slider .slick-dots,
+  .home-gallery-slider .slick-dots {
+    bottom: -20px;
+  }
+
+  .showcase-slider .slick-slide {
+    opacity: 1;
+    transform: none;
+  }
+
+  .showcase-card {
+    height: 17.5rem;
+  }
+
+  .home-gallery-card {
+    height: 16rem;
+  }
+
+  .chatbot-panel {
+    max-height: min(78svh, 42rem);
+  }
 }
 
 /* Amenities glass hover */
@@ -229,4 +295,103 @@
   transform: translateY(-6px);
   box-shadow: 0 32px 70px -45px rgba(0, 0, 0, 0.5);
   background: rgba(255, 255, 255, 0.75);
+}
+
+.rich-text-content {
+  color: hsl(var(--foreground) / 0.84);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.rich-text-content > * + * {
+  margin-top: 1rem;
+}
+
+.rich-text-content h1,
+.rich-text-content h2,
+.rich-text-content h3 {
+  color: hsl(var(--secondary));
+  font-family: var(--font-display, Georgia, serif);
+  line-height: 1.2;
+}
+
+.rich-text-content h1 {
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+}
+
+.rich-text-content h2 {
+  margin-top: 1.75rem;
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+}
+
+.rich-text-content h3 {
+  margin-top: 1.5rem;
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+}
+
+.rich-text-content p {
+  margin: 0;
+}
+
+.rich-text-content ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.rich-text-content li + li {
+  margin-top: 0.5rem;
+}
+
+[contenteditable][data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.admin-rich-text {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.admin-rich-text > * + * {
+  margin-top: 1rem;
+}
+
+.admin-rich-text h1,
+.admin-rich-text h2,
+.admin-rich-text h3 {
+  color: #d9824a;
+  font-family: var(--font-display, Georgia, serif);
+  line-height: 1.2;
+}
+
+.admin-rich-text h1 {
+  font-size: 2rem;
+}
+
+.admin-rich-text h2 {
+  font-size: 1.65rem;
+}
+
+.admin-rich-text h3 {
+  font-size: 1.35rem;
+}
+
+.admin-rich-text p,
+.admin-rich-text li {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.admin-rich-text strong {
+  color: #ffffff;
+}
+
+.admin-rich-text em {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.admin-rich-text ul {
+  padding-left: 1.25rem;
+}
+
+.admin-rich-text li + li {
+  margin-top: 0.45rem;
 }

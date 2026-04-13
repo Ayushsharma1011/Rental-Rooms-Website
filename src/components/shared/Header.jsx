@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LogoLightbox from "@/components/shared/LogoLightbox";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,37 +38,35 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 sm:gap-3">
-            <div
-              className={`h-10 w-16 sm:h-12 sm:w-20 md:h-14 md:w-24 rounded-xl p-1 ring-1 ${
+          <div className="flex items-center gap-2 sm:gap-3">
+            <LogoLightbox
+              containerClassName={`h-10 w-16 sm:h-12 sm:w-20 md:h-14 md:w-24 rounded-xl p-1 ring-1 transition-colors ${
                 showSolid
                   ? "bg-background/90 ring-foreground/20"
                   : "bg-white/10 ring-white/40"
               }`}
-            >
-              <img
-                src="/logo.jpg"
-                alt="Cozy Way"
-                className="h-full w-full object-contain"
-              />
-            </div>
+              imageClassName="h-full w-full object-contain"
+              alt="Cozy Way"
+            />
             <div className="leading-tight">
-              <span
-                className={`block text-base sm:text-lg md:text-xl font-display font-bold drop-shadow-sm ${
-                  showSolid ? "text-foreground" : "text-white"
-                }`}
-              >
-                Cozy Way
-              </span>
-              <span
-                className={`hidden sm:block text-[9px] md:text-[10px] uppercase tracking-[0.18em] ${
-                  showSolid ? "text-foreground/70" : "text-white/80"
-                }`}
-              >
-                My Place My Space
-              </span>
+              <Link to="/">
+                <span
+                  className={`block text-base sm:text-lg md:text-xl font-display font-bold drop-shadow-sm ${
+                    showSolid ? "text-foreground" : "text-white"
+                  }`}
+                >
+                  Cozy Way
+                </span>
+                <span
+                  className={`hidden sm:block text-[9px] md:text-[10px] uppercase tracking-[0.18em] ${
+                    showSolid ? "text-foreground/70" : "text-white/80"
+                  }`}
+                >
+                  My Place My Space
+                </span>
+              </Link>
             </div>
-          </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1 lg:gap-2">
