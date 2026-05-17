@@ -83,7 +83,7 @@ const ManageGallery = () => {
                         <Label htmlFor="category">Category</Label>
                         <Input id="category" value={category} onChange={e => setCategory(e.target.value)} placeholder="e.g., showcase, interior, exterior, nature" />
                         <p className="mt-2 text-sm text-muted-foreground">
-                            Use category <strong>showcase</strong> for the "Rooms &amp; Places, In Focus" photos on the home page.
+                            Use category <strong>showcase</strong> for the homepage slider, <strong>why-choose-us</strong> for the homepage Why Choose Us image, and <strong>journey</strong> for the Our Journey page.
                         </p>
                     </div>
                     <div><Label htmlFor="file">Image File</Label><Input id="file" type="file" onChange={handleFileChange} accept="image/*" /></div>

@@ -17,6 +17,9 @@ import {
   Star,
   MessageSquare,
   Send,
+  Camera,
+  CheckCircle2,
+  X,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -335,6 +338,24 @@ const HomePage = () => {
     siteContent?.youtube_channel_description ||
     'Room tours, local highlights, and stay updates will appear here once your YouTube link is added.';
   const youtubeEmbedUrl = getYouTubeEmbedUrl(siteContent?.youtube_channel_embed_url);
+  const whyChooseLabel = siteContent?.why_choose_label || 'Why Choose Us';
+  const whyChooseTitle =
+    siteContent?.why_choose_title ||
+    'A stay shaped around safety, comfort, and a real sense of belonging.';
+  const whyChooseDescription =
+    siteContent?.why_choose_description ||
+    'Cozy Way is built for guests who want more than a room. Our journey brings together peaceful surroundings, practical amenities, and thoughtful care for students, working women, and travelers in Dharamshala.';
+  const whyChoosePoints = `${siteContent?.why_choose_points || ''}`
+    .split(/\r?\n/)
+    .map((point) => point.trim())
+    .filter(Boolean);
+  const whyChooseVisiblePoints = whyChoosePoints.length
+    ? whyChoosePoints
+    : ['Safe managed stay', 'Peaceful mountain setting', 'Comfort for daily living'];
+  const whyChooseButtonText = siteContent?.why_choose_button_text || 'Read Our Journey';
+  const whyChooseImageLabel = siteContent?.why_choose_image_label || 'See The Story';
+  const whyChooseImageTitle =
+    siteContent?.why_choose_image_title || 'From a need to a welcoming space';
 
   const heroImages = [
     { url: '/ViewfromCozyWay.JPG.jpeg', alt: 'View from Cozy Way with mountains' },
@@ -399,6 +420,10 @@ const HomePage = () => {
 
   const featuredRooms = rooms.slice(0, 3);
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const whyChooseImage =
+    galleryImages.find(
+      (image) => String(image.category || '').toLowerCase() === 'why-choose-us'
+    ) || null;
 
   const gallerySettings = {
     dots: !isMobileView,
@@ -721,6 +746,71 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* WHY CHOOSE US */}
+      <section className="py-3 sm:py-6 lg:py-8">
+        <div className="container mx-auto px-4">
+          <div className="section-frame overflow-hidden px-6 py-10 ring-2 ring-secondary/15 sm:px-10 sm:py-12">
+            <div className="grid items-center gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-12">
+              <div>
+                <p className="text-sm font-extrabold uppercase tracking-[0.35em] text-secondary sm:text-base">
+                  {whyChooseLabel}
+                </p>
+                <h2 className="mt-3 text-3xl font-extrabold leading-tight text-secondary sm:text-5xl font-display">
+                  {whyChooseTitle}
+                </h2>
+                <p className="mt-5 max-w-2xl text-base font-medium leading-8 text-muted-foreground sm:text-lg">
+                  {whyChooseDescription}
+                </p>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  {whyChooseVisiblePoints.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-2 rounded-2xl border border-white/60 bg-white/60 px-4 py-3 text-sm font-semibold text-secondary shadow-sm"
+                    >
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <Button
+                  onClick={() => navigate('/our-journey')}
+                  className="mt-8 rounded-full bg-secondary px-8 py-7 text-lg font-extrabold text-secondary-foreground shadow-[0_18px_45px_-18px_rgba(194,97,59,0.9)] transition-all duration-300 hover:scale-105 hover:bg-secondary/90"
+                >
+                  {whyChooseButtonText}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => navigate('/our-journey')}
+                className="group relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/60 bg-foreground text-left shadow-[0_35px_90px_-55px_rgba(0,0,0,0.65)] sm:min-h-[28rem]"
+              >
+                <img
+                  src={whyChooseImage?.url || '/DSCN1706.JPG.jpeg'}
+                  alt={whyChooseImage?.alt || 'Cozy Way building and surroundings'}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white sm:p-8">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+                    <Camera className="h-6 w-6" />
+                  </div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/75">
+                    {whyChooseImageLabel}
+                  </p>
+                  <h3 className="mt-2 text-2xl font-bold font-display sm:text-3xl">
+                    {whyChooseImageTitle}
+                  </h3>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* AMENITIES */}
       <section className="py-2 sm:py-4 lg:py-6">
@@ -867,7 +957,7 @@ const HomePage = () => {
               Explore our Spaces
               </h2>
               <p className="max-w-2xl mx-auto text-sm sm:text-base text-muted-foreground mt-3 sm:mt-4">
-                From cozy rooms to stunning mountain view's
+                From cozy rooms to stunning mountain views
               </p>
             </div>
 

@@ -16,6 +16,8 @@ import ManageSiteContent from '@/components/admin/ManageSiteContent';
 import ManageNearbySpots from '@/components/admin/ManageNearbySpots';
 import ManageAmenities from '@/components/admin/ManageAmenities';
 import ManageTestimonials from '@/components/admin/ManageTestimonials';
+import ManageJourneyImages from '@/components/admin/ManageJourneyImages';
+import ManageWhyChooseImage from '@/components/admin/ManageWhyChooseImage';
 
 const AdminDashboard = () => {
     const { toast } = useToast();
@@ -72,10 +74,12 @@ const AdminDashboard = () => {
                 </motion.div>
 
                 <Tabs defaultValue="rooms" className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 md:grid-cols-8 bg-white/5 border border-white/10 rounded-2xl h-auto flex-wrap p-2 backdrop-blur-xl">
+                    <TabsList className="grid w-full grid-cols-3 md:grid-cols-10 bg-white/5 border border-white/10 rounded-2xl h-auto flex-wrap p-2 backdrop-blur-xl">
                         <TabsTrigger value="rooms"><BedDouble className="mr-2 h-4 w-4" />Rooms</TabsTrigger>
                         <TabsTrigger value="amenities"><Sparkles className="mr-2 h-4 w-4" />Amenities</TabsTrigger>
                         <TabsTrigger value="showcase"><Image className="mr-2 h-4 w-4" />Homepage Showcase</TabsTrigger>
+                        <TabsTrigger value="whyChoose"><Image className="mr-2 h-4 w-4" />Why Choose</TabsTrigger>
+                        <TabsTrigger value="journey"><Image className="mr-2 h-4 w-4" />Journey Images</TabsTrigger>
                         <TabsTrigger value="gallery"><Image className="mr-2 h-4 w-4" />Gallery Images</TabsTrigger>
                         <TabsTrigger value="nearbySpots"><MapPin className="mr-2 h-4 w-4" />Nearby Spots</TabsTrigger>
                         <TabsTrigger value="testimonials"><Star className="mr-2 h-4 w-4" />Testimonials</TabsTrigger>
@@ -90,6 +94,12 @@ const AdminDashboard = () => {
                     </TabsContent>
                     <TabsContent value="showcase" className="mt-6">
                         <ManageShowcaseImages />
+                    </TabsContent>
+                    <TabsContent value="whyChoose" className="mt-6">
+                        <ManageWhyChooseImage />
+                    </TabsContent>
+                    <TabsContent value="journey" className="mt-6">
+                        <ManageJourneyImages />
                     </TabsContent>
                     <TabsContent value="gallery" className="mt-6">
                         <ManageGallery />

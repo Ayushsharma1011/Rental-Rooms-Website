@@ -229,6 +229,14 @@ export const SITE_CONTENT_DEFAULTS = {
   youtube_channel_description:
     'Add your YouTube channel or video link from the admin panel to showcase room tours, local highlights, and stay updates here.',
   youtube_channel_embed_url: 'https://www.youtube.com/watch?v=s406qpED-VE',
+  why_choose_label: 'Why Choose Us',
+  why_choose_title: 'A stay shaped around safety, comfort, and a real sense of belonging.',
+  why_choose_description:
+    'Cozy Way is built for guests who want more than a room. Our journey brings together peaceful surroundings, practical amenities, and thoughtful care for students, working women, and travelers in Dharamshala.',
+  why_choose_points: 'Safe managed stay\nPeaceful mountain setting\nComfort for daily living',
+  why_choose_button_text: 'Read Our Journey',
+  why_choose_image_label: 'See The Story',
+  why_choose_image_title: 'From a need to a welcoming space',
 };
 
 export const SITE_CONTENT_ADMIN_SECTIONS = [
@@ -241,6 +249,19 @@ export const SITE_CONTENT_ADMIN_SECTIONS = [
       { key: 'youtube_channel_title', label: 'YouTube Section Title', type: 'text' },
       { key: 'youtube_channel_description', label: 'YouTube Section Description', type: 'textarea' },
       { key: 'youtube_channel_embed_url', label: 'YouTube Link or Embed URL', type: 'text' },
+    ],
+  },
+  {
+    title: 'Homepage Why Choose Us',
+    description: 'Text shown in the bold Why Choose Us section on the homepage.',
+    fields: [
+      { key: 'why_choose_label', label: 'Small Label', type: 'text' },
+      { key: 'why_choose_title', label: 'Main Heading', type: 'textarea' },
+      { key: 'why_choose_description', label: 'Description', type: 'textarea' },
+      { key: 'why_choose_points', label: 'Key Points - one per line', type: 'textarea' },
+      { key: 'why_choose_button_text', label: 'Button Text', type: 'text' },
+      { key: 'why_choose_image_label', label: 'Image Overlay Label', type: 'text' },
+      { key: 'why_choose_image_title', label: 'Image Overlay Title', type: 'text' },
     ],
   },
   {
