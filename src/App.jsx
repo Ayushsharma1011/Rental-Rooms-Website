@@ -8,6 +8,7 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import WebsiteChatbot from '@/components/shared/WebsiteChatbot';
+import CozywayAnimatedLogo from '@/components/shared/CozywayAnimatedLogo';
 import HomePage from '@/pages/HomePage';
 import RoomsPage from '@/pages/RoomsPage';
 import GalleryPage from '@/pages/GalleryPage';
@@ -27,10 +28,28 @@ import TestimonialsPage from "@/pages/TestimonialsPage";
 function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const [showSplash, setShowSplash] = React.useState(!isAdminRoute);
   
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  React.useEffect(() => {
+    if (isAdminRoute) {
+      setShowSplash(false);
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShowSplash(false);
+    }, 2000);
+
+    return () => window.clearTimeout(timer);
+  }, [isAdminRoute]);
+
+  if (showSplash) {
+    return <CozywayAnimatedLogo />;
+  }
 
   return (
     <div className={isAdminRoute ? 'dark' : ''}>
