@@ -46,6 +46,14 @@ const IconWrapper = ({ name, ...props }) => {
   return <IconComponent {...props} />;
 };
 
+const REVIEW_PREVIEW_LIMIT = 320;
+
+const getReviewPreview = (value = '') => {
+  const normalized = `${value}`.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= REVIEW_PREVIEW_LIMIT) return normalized;
+  return `${normalized.slice(0, REVIEW_PREVIEW_LIMIT).trim()}...`;
+};
+
 /* ========================= ROOM DETAIL MODAL ========================= */
 const RoomDetailModal = ({ room, open, onOpenChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -352,7 +360,7 @@ const HomePage = () => {
   const whyChooseVisiblePoints = whyChoosePoints.length
     ? whyChoosePoints
     : ['Safe managed stay', 'Peaceful mountain setting', 'Comfort for daily living'];
-  const whyChooseButtonText = siteContent?.why_choose_button_text || 'Read Our Journey';
+  const whyChooseButtonText = 'Explore Why Choose Us';
   const whyChooseImageLabel = siteContent?.why_choose_image_label || 'See The Story';
   const whyChooseImageTitle =
     siteContent?.why_choose_image_title || 'From a need to a welcoming space';
@@ -685,9 +693,9 @@ const HomePage = () => {
 </section>
 
       {/* SHOWCASE CAROUSEL */}
-      <section className="py-3 sm:py-6">
+      <section className="py-2 sm:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame px-4 sm:px-10 py-6 sm:py-10 showcase-slider">
+          <div className="section-frame px-4 py-6 showcase-slider sm:px-10 sm:py-8">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6">
               <div>
                 <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-secondary/80">
@@ -747,9 +755,9 @@ const HomePage = () => {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="py-3 sm:py-6 lg:py-8">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame overflow-hidden px-6 py-10 ring-2 ring-secondary/15 sm:px-10 sm:py-12">
+          <div className="section-frame overflow-hidden px-6 py-8 ring-2 ring-secondary/15 sm:px-10 sm:py-10">
             <div className="grid items-center gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-12">
               <div>
                 <p className="text-sm font-extrabold uppercase tracking-[0.35em] text-secondary sm:text-base">
@@ -813,9 +821,9 @@ const HomePage = () => {
 
 
       {/* AMENITIES */}
-      <section className="py-2 sm:py-4 lg:py-6">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame px-6 sm:px-10 py-10 sm:py-12">
+          <div className="section-frame px-6 py-8 sm:px-10 sm:py-10">
             <div className="text-center mb-12 sm:mb-16">
               <h2 className="text-2xl sm:text-4xl font-bold font-display">
               Comforts of Home, Elevated
@@ -855,9 +863,9 @@ const HomePage = () => {
       </section>
 
       {/* FEATURED ROOMS */}
-      <section className="py-3 sm:py-6 lg:py-8">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame px-6 sm:px-10 py-10 sm:py-12">
+          <div className="section-frame px-6 py-8 sm:px-10 sm:py-10">
             <div className="text-center mb-10 sm:mb-14">
               <h2 className="text-2xl sm:text-4xl font-bold font-display text-secondary">
               Featured Rooms
@@ -904,9 +912,9 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="py-3 sm:py-6 lg:py-8">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame overflow-hidden px-6 py-10 sm:px-10 sm:py-12">
+          <div className="section-frame overflow-hidden px-6 py-8 sm:px-10 sm:py-10">
             <div className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
               <div>
                 <p className="text-xs uppercase tracking-[0.35em] text-secondary/80">
@@ -949,9 +957,9 @@ const HomePage = () => {
       </section>
 
       {/* GLIMPSES OF PARADISE */}
-      <section className="py-3 sm:py-6 lg:py-8">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame px-6 sm:px-10 py-10 sm:py-12">
+          <div className="section-frame px-6 py-8 sm:px-10 sm:py-10">
             <div className="text-center mb-10 sm:mb-14">
               <h2 className="text-2xl sm:text-4xl font-bold font-display text-secondary">
               Explore our Spaces
@@ -1009,9 +1017,9 @@ const HomePage = () => {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-3 sm:py-6 lg:py-8">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4 text-center">
-          <div className="section-frame px-6 sm:px-10 py-10 sm:py-12">
+          <div className="section-frame px-6 py-8 sm:px-10 sm:py-10">
             <h2 className="text-2xl sm:text-4xl font-bold font-display mb-3 sm:mb-4 text-secondary">
               What Our Guests Say
             </h2>
@@ -1041,11 +1049,11 @@ const HomePage = () => {
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-4 border-4 border-white shadow-lg"
                   />
 
-                  <p className="text-sm sm:text-lg italic text-foreground/80 mb-4">
-                    "{approvedTestimonials[testimonialIndex].text}"
+                  <p className="mb-4 max-h-36 max-w-full overflow-hidden break-words px-1 text-sm italic leading-7 text-foreground/80 sm:max-h-44 sm:text-lg">
+                    "{getReviewPreview(approvedTestimonials[testimonialIndex].text)}"
                   </p>
 
-                  <p className="font-bold text-secondary text-sm sm:text-base">
+                  <p className="max-w-full break-words font-bold text-secondary text-sm sm:text-base">
                     {approvedTestimonials[testimonialIndex].name}
                   </p>
 
@@ -1077,9 +1085,9 @@ const HomePage = () => {
       </section>
 
       {/* LOCATION MAP */}
-      <section className="py-3 sm:py-6 lg:py-8">
+      <section className="py-2 sm:py-3 lg:py-3">
         <div className="container mx-auto px-4">
-          <div className="section-frame px-6 sm:px-10 py-10 sm:py-12">
+          <div className="section-frame px-6 py-8 sm:px-10 sm:py-10">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-4xl font-bold font-display text-secondary">
                 Find Cozy Way
