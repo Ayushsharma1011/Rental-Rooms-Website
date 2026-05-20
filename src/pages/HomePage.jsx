@@ -19,6 +19,7 @@ import {
   Send,
   Camera,
   CheckCircle2,
+  MapPin,
   X,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -366,17 +367,19 @@ const HomePage = () => {
     siteContent?.why_choose_image_title || 'From a need to a welcoming space';
 
   const heroImages = [
-    { url: '/ViewfromCozyWay.JPG.jpeg', alt: 'View from Cozy Way with mountains' },
-    { url: '/Moon Peak.JPG.jpeg', alt: 'Moon Peak mountain landscape' },
-    { url: '/DSCN1706.JPG.jpeg', alt: 'Cozy Way exterior and surroundings' },
-    { url: '/DSCN1710.JPG.jpeg', alt: 'Property frontage at Cozy Way' },
-    { url: '/DSCN1704.JPG.jpeg', alt: 'Open area and building view at Cozy Way' },
+    { url: '/optimized/ViewfromCozyWay.JPG.webp', alt: 'View from Cozy Way with mountains' },
+    { url: '/optimized/Moon Peak.JPG.webp', alt: 'Moon Peak mountain landscape' },
+    { url: '/optimized/DSCN1706.JPG.webp', alt: 'Cozy Way exterior and surroundings' },
+    { url: '/optimized/DSCN1710.JPG.webp', alt: 'Property frontage at Cozy Way' },
+    { url: '/optimized/DSCN1704.JPG.webp', alt: 'Open area and building view at Cozy Way' },
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobileView, setIsMobileView] = useState(false);
   const [activeShowcaseSlide, setActiveShowcaseSlide] = useState(0);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
+  const mapContainerRef = useRef(null);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
@@ -394,6 +397,28 @@ const HomePage = () => {
     window.addEventListener('resize', updateViewport);
     return () => window.removeEventListener('resize', updateViewport);
   }, []);
+
+  useEffect(() => {
+    if (shouldLoadMap) return undefined;
+    const target = mapContainerRef.current;
+    if (!target || typeof IntersectionObserver === 'undefined') {
+      setShouldLoadMap(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '500px 0px' }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [shouldLoadMap]);
 
 
   const ref = useRef(null);
@@ -467,13 +492,13 @@ const HomePage = () => {
     }
 
     return [
-      { id: 'showcase-1', url: '/ViewfromCozyWay.JPG.jpeg', alt: 'View from Cozy Way with hills' },
-      { id: 'showcase-2', url: '/DSCN1704.JPG.jpeg', alt: 'Building exterior at Cozy Way' },
-      { id: 'showcase-3', url: '/DSCN1706.JPG.jpeg', alt: 'Property view from side angle' },
-      { id: 'showcase-4', url: '/DSCN1710.JPG.jpeg', alt: 'Front side of the property' },
-      { id: 'showcase-5', url: '/DSCN1725.JPG.jpeg', alt: 'Room corridor and clean interiors' },
-      { id: 'showcase-6', url: '/Moon Peak.JPG.jpeg', alt: 'Nearby mountain view' },
-      { id: 'showcase-7', url: '/Triund.JPG.jpeg', alt: 'Triund scenic view' },
+      { id: 'showcase-1', url: '/optimized/ViewfromCozyWay.JPG.webp', alt: 'View from Cozy Way with hills' },
+      { id: 'showcase-2', url: '/optimized/DSCN1704.JPG.webp', alt: 'Building exterior at Cozy Way' },
+      { id: 'showcase-3', url: '/optimized/DSCN1706.JPG.webp', alt: 'Property view from side angle' },
+      { id: 'showcase-4', url: '/optimized/DSCN1710.JPG.webp', alt: 'Front side of the property' },
+      { id: 'showcase-5', url: '/optimized/DSCN1725.JPG.webp', alt: 'Room corridor and clean interiors' },
+      { id: 'showcase-6', url: '/optimized/Moon Peak.JPG.webp', alt: 'Nearby mountain view' },
+      { id: 'showcase-7', url: '/optimized/Triund.JPG.webp', alt: 'Triund scenic view' },
     ];
   }, [galleryImages]);
 
@@ -601,6 +626,8 @@ const HomePage = () => {
         src={heroImages[currentSlide].url}
         alt={heroImages[currentSlide].alt}
         className="absolute inset-0 h-full w-full object-cover"
+        fetchPriority={currentSlide === 0 ? 'high' : 'auto'}
+        decoding="async"
       />
 
       {/* ✅ UPDATED: Alpine base gradient — reduced opacity so mountain shows through brighter */}
@@ -728,6 +755,8 @@ const HomePage = () => {
                             src={slide.url}
                             alt={slide.alt}
                             className="absolute inset-0 h-full w-full object-cover object-center"
+                            loading="lazy"
+                            decoding="async"
                           />
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
@@ -797,9 +826,11 @@ const HomePage = () => {
                 className="group relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/60 bg-foreground text-left shadow-[0_35px_90px_-55px_rgba(0,0,0,0.65)] sm:min-h-[28rem]"
               >
                 <img
-                  src={whyChooseImage?.url || '/DSCN1706.JPG.jpeg'}
+                  src={whyChooseImage?.url || '/optimized/DSCN1706.JPG.webp'}
                   alt={whyChooseImage?.alt || 'Cozy Way building and surroundings'}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white sm:p-8">
@@ -935,6 +966,7 @@ const HomePage = () => {
                       src={youtubeEmbedUrl}
                       title="Cozy Way YouTube channel"
                       className="h-full w-full"
+                      loading="lazy"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                     />
@@ -983,6 +1015,8 @@ const HomePage = () => {
                         src={img.url}
                         alt={img.alt}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   </div>
@@ -1047,6 +1081,8 @@ const HomePage = () => {
                     }
                     alt={approvedTestimonials[testimonialIndex].name}
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-4 border-4 border-white shadow-lg"
+                    loading="lazy"
+                    decoding="async"
                   />
 
                   <p className="mb-4 max-h-36 max-w-full overflow-hidden break-words px-1 text-sm italic leading-7 text-foreground/80 sm:max-h-44 sm:text-lg">
@@ -1097,16 +1133,28 @@ const HomePage = () => {
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-white/50 bg-white/70 shadow-[0_30px_70px_-45px_rgba(0,0,0,0.5)]">
+            <div
+              ref={mapContainerRef}
+              className="overflow-hidden rounded-3xl border border-white/50 bg-white/70 shadow-[0_30px_70px_-45px_rgba(0,0,0,0.5)]"
+            >
               <div className="w-full h-[320px] sm:h-[420px]">
-                <iframe
-                  title="Cozy Way Location Map"
-                  src="https://www.google.com/maps?q=CozyWay%2C%20Gokhle%20Marg%2C%20Depot-Bazar%20Rd%2C%20Dharamshala%2C%20Himachal%20Pradesh%20176215&output=embed"
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
+                {shouldLoadMap ? (
+                  <iframe
+                    title="Cozy Way Location Map"
+                    src="https://www.google.com/maps?q=CozyWay%2C%20Gokhle%20Marg%2C%20Depot-Bazar%20Rd%2C%20Dharamshala%2C%20Himachal%20Pradesh%20176215&output=embed"
+                    className="w-full h-full border-0"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center bg-foreground/90 px-6 text-center text-white">
+                    <div>
+                      <MapPin className="mx-auto h-10 w-10 text-secondary" />
+                      <p className="mt-3 text-lg font-semibold font-display">Map loading when needed</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
