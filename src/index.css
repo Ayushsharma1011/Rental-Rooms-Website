@@ -396,6 +396,48 @@
   margin-top: 0.45rem;
 }
 
+.admin-tabs-scroll {
+  scrollbar-width: none;
+}
+
+.admin-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.dark .glassmorphic-card {
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(16px);
+}
+
+.dark .glassmorphic-card input,
+.dark .glassmorphic-card textarea,
+.dark .glassmorphic-card select {
+  min-height: 2.75rem;
+}
+
+@media (max-width: 640px) {
+  .dark .glassmorphic-card > div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .dark .glassmorphic-card h3 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+  }
+
+  .dark .glassmorphic-card button {
+    min-height: 2.5rem;
+  }
+
+  .dark .glassmorphic-card img {
+    max-width: 100%;
+  }
+}
+
 .cozyway-splash {
   position: fixed;
   inset: 0;

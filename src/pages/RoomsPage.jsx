@@ -282,6 +282,7 @@ const RoomsPage = () => {
   const { rooms = [], loading } = useData();
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [visibleRoomCount, setVisibleRoomCount] = useState(6);
 
   const filteredRooms = useMemo(() => {
     return rooms.filter((room) => {
@@ -291,6 +292,15 @@ const RoomsPage = () => {
       return true;
     });
   }, [rooms, availabilityFilter]);
+
+  const visibleRooms = useMemo(
+    () => filteredRooms.slice(0, visibleRoomCount),
+    [filteredRooms, visibleRoomCount]
+  );
+
+  useEffect(() => {
+    setVisibleRoomCount(6);
+  }, [availabilityFilter]);
 
   const roomsPageSchema = useMemo(
     () => ({
@@ -398,20 +408,34 @@ const RoomsPage = () => {
               <Loader2 className="h-12 w-12 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
-              {filteredRooms.map((room, index) => (
-                <motion.div
-                  key={room.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.45, delay: index * 0.08 }}
-                  className="flex"
-                >
-                  <RoomCard room={room} onReadMore={setSelectedRoom} />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
+                {visibleRooms.map((room, index) => (
+                  <motion.div
+                    key={room.id}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                    className="flex"
+                  >
+                    <RoomCard room={room} onReadMore={setSelectedRoom} />
+                  </motion.div>
+                ))}
+              </div>
+              {visibleRoomCount < filteredRooms.length && (
+                <div className="mt-10 flex justify-center">
+                  <Button
+                    onClick={() =>
+                      setVisibleRoomCount((prev) => Math.min(prev + 6, filteredRooms.length))
+                    }
+                    className="rounded-full bg-secondary px-6 py-3 text-secondary-foreground shadow-lg hover:bg-secondary/90"
+                  >
+                    More Rooms
+                  </Button>
+                </div>
+              )}
+            </>
           )}
 
           {filteredRooms.length === 0 && !loading && (

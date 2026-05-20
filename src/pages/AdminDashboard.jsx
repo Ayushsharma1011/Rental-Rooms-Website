@@ -19,6 +19,19 @@ import ManageTestimonials from '@/components/admin/ManageTestimonials';
 import ManageJourneyImages from '@/components/admin/ManageJourneyImages';
 import ManageWhyChooseImage from '@/components/admin/ManageWhyChooseImage';
 
+const adminTabs = [
+    { value: 'rooms', label: 'Rooms', icon: BedDouble, component: ManageRooms },
+    { value: 'amenities', label: 'Amenities', icon: Sparkles, component: ManageAmenities },
+    { value: 'showcase', label: 'Homepage Showcase', icon: Image, component: ManageShowcaseImages },
+    { value: 'whyChoose', label: 'Why Choose', icon: Image, component: ManageWhyChooseImage },
+    { value: 'journey', label: 'Journey Images', icon: Image, component: ManageJourneyImages },
+    { value: 'gallery', label: 'Gallery Images', icon: Image, component: ManageGallery },
+    { value: 'nearbySpots', label: 'Nearby Spots', icon: MapPin, component: ManageNearbySpots },
+    { value: 'testimonials', label: 'Testimonials', icon: Star, component: ManageTestimonials },
+    { value: 'messages', label: 'Messages', icon: MessageSquare, component: ViewMessages },
+    { value: 'content', label: 'Site Content', icon: Edit, component: ManageSiteContent },
+];
+
 const AdminDashboard = () => {
     const { toast } = useToast();
     const { signOut, user } = useAuth();
@@ -55,67 +68,49 @@ const AdminDashboard = () => {
                     content="best homestay in dharamshala, rooms in dharamshala, homestay in dharamshala, stay in dharamshala, dharamshala homestay, dharamshala rooms, cozy way dharamshala, dharmashala homestay, rooms in dharmashala"
                 />
             </Helmet>
-            <div className="container mx-auto px-4 py-16">
+            <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-10 lg:py-16">
                  <motion.div 
                     initial={{opacity: 0, y: -20}} 
                     animate={{opacity: 1, y: 0}} 
                     transition={{duration: 0.5}}
-                    className="flex flex-wrap justify-between items-center mb-10 gap-4 surface-card px-6 sm:px-8 py-6 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl"
+                    className="mb-5 flex flex-col items-stretch gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-5 backdrop-blur-xl sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:rounded-3xl sm:px-8 sm:py-6"
                  >
-                    <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-white/60">Admin Console</p>
-                        <h1 className="text-4xl sm:text-5xl font-bold font-display text-white mt-3">Dashboard</h1>
-                        <p className="text-base sm:text-lg text-white/70">Welcome, {user?.email || 'Admin'}!</p>
+                    <div className="min-w-0">
+                        <p className="text-[10px] uppercase tracking-[0.28em] text-white/60 sm:text-xs sm:tracking-[0.35em]">Admin Console</p>
+                        <h1 className="mt-2 text-3xl font-bold text-white sm:mt-3 sm:text-5xl font-display">Dashboard</h1>
+                        <p className="mt-1 truncate text-sm text-white/70 sm:text-lg">Welcome, {user?.email || 'Admin'}!</p>
                     </div>
-                    <Button onClick={handleLogout} variant="destructive" disabled={loadingLogout}>
+                    <Button
+                        onClick={handleLogout}
+                        variant="destructive"
+                        disabled={loadingLogout}
+                        className="h-11 w-full rounded-xl sm:w-auto"
+                    >
                         {loadingLogout ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogOut className="mr-2 h-4 w-4" />} 
                         Logout
                     </Button>
                 </motion.div>
 
                 <Tabs defaultValue="rooms" className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 md:grid-cols-10 bg-white/5 border border-white/10 rounded-2xl h-auto flex-wrap p-2 backdrop-blur-xl">
-                        <TabsTrigger value="rooms"><BedDouble className="mr-2 h-4 w-4" />Rooms</TabsTrigger>
-                        <TabsTrigger value="amenities"><Sparkles className="mr-2 h-4 w-4" />Amenities</TabsTrigger>
-                        <TabsTrigger value="showcase"><Image className="mr-2 h-4 w-4" />Homepage Showcase</TabsTrigger>
-                        <TabsTrigger value="whyChoose"><Image className="mr-2 h-4 w-4" />Why Choose</TabsTrigger>
-                        <TabsTrigger value="journey"><Image className="mr-2 h-4 w-4" />Journey Images</TabsTrigger>
-                        <TabsTrigger value="gallery"><Image className="mr-2 h-4 w-4" />Gallery Images</TabsTrigger>
-                        <TabsTrigger value="nearbySpots"><MapPin className="mr-2 h-4 w-4" />Nearby Spots</TabsTrigger>
-                        <TabsTrigger value="testimonials"><Star className="mr-2 h-4 w-4" />Testimonials</TabsTrigger>
-                        <TabsTrigger value="messages"><MessageSquare className="mr-2 h-4 w-4" />Messages</TabsTrigger>
-                        <TabsTrigger value="content"><Edit className="mr-2 h-4 w-4" />Site Content</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="rooms" className="mt-6">
-                        <ManageRooms />
-                    </TabsContent>
-                    <TabsContent value="amenities" className="mt-6">
-                        <ManageAmenities />
-                    </TabsContent>
-                    <TabsContent value="showcase" className="mt-6">
-                        <ManageShowcaseImages />
-                    </TabsContent>
-                    <TabsContent value="whyChoose" className="mt-6">
-                        <ManageWhyChooseImage />
-                    </TabsContent>
-                    <TabsContent value="journey" className="mt-6">
-                        <ManageJourneyImages />
-                    </TabsContent>
-                    <TabsContent value="gallery" className="mt-6">
-                        <ManageGallery />
-                    </TabsContent>
-                    <TabsContent value="nearbySpots" className="mt-6">
-                        <ManageNearbySpots />
-                    </TabsContent>
-                    <TabsContent value="testimonials" className="mt-6">
-                        <ManageTestimonials />
-                    </TabsContent>
-                    <TabsContent value="messages" className="mt-6">
-                        <ViewMessages />
-                    </TabsContent>
-                    <TabsContent value="content" className="mt-6">
-                        <ManageSiteContent />
-                    </TabsContent>
+                    <div className="-mx-3 overflow-x-auto px-3 pb-2 sm:mx-0 sm:overflow-visible sm:px-0">
+                        <TabsList className="admin-tabs-scroll !flex h-auto min-w-max justify-start gap-2 rounded-2xl border border-white/10 bg-white/5 p-2 backdrop-blur-xl sm:!grid sm:min-w-0 sm:w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
+                            {adminTabs.map(({ value, label, icon: Icon }) => (
+                                <TabsTrigger
+                                    key={value}
+                                    value={value}
+                                    className="h-11 min-w-[8.75rem] gap-2 rounded-xl px-3 text-xs text-white/75 data-[state=active]:bg-white data-[state=active]:text-[#1f1b16] sm:min-w-0 sm:text-sm"
+                                >
+                                    <Icon className="h-4 w-4 shrink-0" />
+                                    <span className="truncate">{label}</span>
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                    </div>
+                    {adminTabs.map(({ value, component: Component }) => (
+                        <TabsContent key={value} value={value} className="mt-4 sm:mt-6">
+                            <Component />
+                        </TabsContent>
+                    ))}
                 </Tabs>
             </div>
         </PageTransition>

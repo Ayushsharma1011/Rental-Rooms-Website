@@ -6,6 +6,7 @@ import LogoLightbox from '@/components/shared/LogoLightbox';
 const Footer = () => {
   const footerLinks = [
     { name: 'About', path: '/about' },
+    { name: 'Why Choose Us', path: '/why-choose-us' },
     { name: 'Our Journey', path: '/our-journey' },
     { name: 'Contact', path: '/contact' },
     { name: 'Privacy Policy', path: '/privacy-policy' },
@@ -116,7 +117,7 @@ const Footer = () => {
 
           <NavLink
             to="/admin"
-            className="flex items-center gap-2 text-white/70 transition-colors hover:text-white"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-3 text-white/80 transition-colors hover:border-white/40 hover:text-white"
           >
             <LogIn size={16} />
             <span>Admin Login</span>

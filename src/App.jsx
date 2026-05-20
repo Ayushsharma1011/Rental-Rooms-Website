@@ -17,6 +17,7 @@ import AboutPage from '@/pages/AboutPage';
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
 import TermsPage from '@/pages/TermsPage';
 import OurJourneyPage from '@/pages/OurJourneyPage';
+import WhyChooseUsPage from '@/pages/WhyChooseUsPage';
 import NearbySpotsPage from '@/pages/NearbySpotsPage';
 import AdminPage from '@/pages/AdminPage';
 import AdminDashboard from '@/pages/AdminDashboard';
@@ -69,6 +70,7 @@ function AppContent() {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
               <Route path="/our-journey" element={<OurJourneyPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/terms-and-conditions" element={<TermsPage />} />

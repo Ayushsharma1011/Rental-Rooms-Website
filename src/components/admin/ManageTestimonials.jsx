@@ -45,12 +45,12 @@ const ManageTestimonials = () => {
                                 item.status === 'approved' && 'border-green-500',
                                 item.status === 'pending' && 'border-yellow-500'
                             )}>
-                                <div className="flex justify-between items-start">
-                                    <div>
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                    <div className="min-w-0">
                                         <p className="font-bold text-secondary">{item.name}</p>
                                         <p className="text-xs text-gray-500">{new Date(item.created_at).toLocaleString()}</p>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                                         <span className={cn(
                                             'text-xs font-semibold px-2 py-1 rounded-full',
                                             item.status === 'approved' ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300'
@@ -63,7 +63,7 @@ const ManageTestimonials = () => {
                                         <Button variant="destructive" size="icon" onClick={() => handleDelete(item.id)}><Trash2 className="h-4 w-4" /></Button>
                                     </div>
                                 </div>
-                                <p className="mt-2 text-gray-200">{item.text}</p>
+                                <p className="mt-2 break-words text-gray-200">{item.text}</p>
                             </div>
                         )) : <p className="text-center text-gray-400">No testimonials submitted yet.</p>}
                     </div>

@@ -61,7 +61,7 @@ const ManageAmenities = () => {
         <Card className="glassmorphic-card">
             <CardHeader><CardTitle>Manage Amenities</CardTitle></CardHeader>
             <CardContent>
-                <form onSubmit={handleAdd} className="flex gap-4 mb-8 p-4 border border-dashed rounded-lg">
+                <form onSubmit={handleAdd} className="mb-8 flex flex-col gap-4 rounded-lg border border-dashed p-4 sm:flex-row">
                     <div className="flex-grow">
                         <Label htmlFor="new-amenity">Amenity Name</Label>
                         <Input id="new-amenity" value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. Free Parking" />
@@ -70,7 +70,7 @@ const ManageAmenities = () => {
                         <Label htmlFor="new-icon">Icon Name (Lucide)</Label>
                         <Input id="new-icon" value={newIcon} onChange={e => setNewIcon(e.target.value)} placeholder="e.g. Wifi, Bed" />
                     </div>
-                    <Button type="submit" disabled={isAdding} className="self-end">
+                    <Button type="submit" disabled={isAdding} className="w-full self-end sm:w-auto">
                         {isAdding ? <Loader2 className="animate-spin" /> : <PlusCircle className="h-4 w-4" />}
                     </Button>
                 </form>
@@ -78,17 +78,17 @@ const ManageAmenities = () => {
                 {loading ? <div className="flex justify-center"><Loader2 className="animate-spin h-8 w-8" /></div> : (
                     <div className="space-y-2">
                         {amenities.map(amenity => (
-                            <div key={amenity.id} className="flex items-center justify-between p-3 rounded-lg bg-white/5">
+                            <div key={amenity.id} className="flex flex-col gap-3 rounded-lg bg-white/5 p-3 sm:flex-row sm:items-center sm:justify-between">
                                 {editingAmenity?.id === amenity.id ? (
-                                    <form onSubmit={handleUpdate} className="flex-grow flex items-center gap-2">
+                                    <form onSubmit={handleUpdate} className="flex flex-grow flex-col gap-2 sm:flex-row sm:items-center">
                                         <Input value={editingAmenity.name} onChange={e => setEditingAmenity({...editingAmenity, name: e.target.value})} className="bg-white/10" />
                                         <Input value={editingAmenity.icon_name || ''} onChange={e => setEditingAmenity({...editingAmenity, icon_name: e.target.value})} placeholder="Icon Name" className="bg-white/10" />
-                                        <Button type="submit" size="icon"><Save className="h-4 w-4" /></Button>
+                                        <Button type="submit" className="w-full sm:w-10" size="icon"><Save className="h-4 w-4" /></Button>
                                     </form>
                                 ) : (
                                     <>
-                                        <p>{amenity.name} ({amenity.icon_name || 'No Icon'})</p>
-                                        <div className="flex gap-2">
+                                        <p className="break-words">{amenity.name} ({amenity.icon_name || 'No Icon'})</p>
+                                        <div className="flex justify-end gap-2">
                                             <Button variant="outline" size="icon" onClick={() => setEditingAmenity(amenity)}><Edit className="h-4 w-4" /></Button>
                                             <Button variant="destructive" size="icon" onClick={() => handleDelete(amenity.id)}><Trash2 className="h-4 w-4" /></Button>
                                         </div>

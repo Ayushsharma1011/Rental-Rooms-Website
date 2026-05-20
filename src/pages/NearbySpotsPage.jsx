@@ -137,6 +137,9 @@ const NearbySpotDetailModal = ({ spot, open, onOpenChange }) => {
 const NearbySpotsPage = () => {
   const { nearbySpots, loading } = useData();
   const [selectedSpot, setSelectedSpot] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(6);
+
+  const visibleSpots = nearbySpots.slice(0, visibleCount);
 
   return (
     <PageTransition>
@@ -186,20 +189,33 @@ const NearbySpotsPage = () => {
               <Loader2 className="h-12 w-12 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {nearbySpots.map((spot, index) => (
-                <motion.div
-                  key={spot.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex justify-center group"
-                >
-                  <NearbySpotCard spot={spot} onReadMore={setSelectedSpot} />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {visibleSpots.map((spot, index) => (
+                  <motion.div
+                    key={spot.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="flex justify-center group"
+                  >
+                    <NearbySpotCard spot={spot} onReadMore={setSelectedSpot} />
+                  </motion.div>
+                ))}
+              </div>
+
+              {visibleCount < nearbySpots.length && (
+                <div className="mt-10 flex justify-center">
+                  <Button
+                    onClick={() => setVisibleCount((prev) => Math.min(prev + 4, nearbySpots.length))}
+                    className="rounded-full bg-secondary px-6 py-3 text-secondary-foreground shadow-lg hover:bg-secondary/90"
+                  >
+                    More Spots
+                  </Button>
+                </div>
+              )}
+            </>
           )}
 
           {nearbySpots.length === 0 && !loading && (

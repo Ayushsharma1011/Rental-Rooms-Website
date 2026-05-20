@@ -775,7 +775,7 @@ const HomePage = () => {
                 </div>
 
                 <Button
-                  onClick={() => navigate('/our-journey')}
+                  onClick={() => navigate('/why-choose-us')}
                   className="mt-8 rounded-full bg-secondary px-8 py-7 text-lg font-extrabold text-secondary-foreground shadow-[0_18px_45px_-18px_rgba(194,97,59,0.9)] transition-all duration-300 hover:scale-105 hover:bg-secondary/90"
                 >
                   {whyChooseButtonText}
@@ -785,7 +785,7 @@ const HomePage = () => {
 
               <button
                 type="button"
-                onClick={() => navigate('/our-journey')}
+                onClick={() => navigate('/why-choose-us')}
                 className="group relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/60 bg-foreground text-left shadow-[0_35px_90px_-55px_rgba(0,0,0,0.65)] sm:min-h-[28rem]"
               >
                 <img

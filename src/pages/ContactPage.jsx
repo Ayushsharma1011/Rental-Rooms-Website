@@ -7,6 +7,8 @@ import {
   Loader2,
   MessageCircle,
   ArrowRight,
+  Clock,
+  Headphones,
 } from "lucide-react";
 
 import ContentPageTemplate from "@/components/shared/ContentPageTemplate";
@@ -175,6 +177,13 @@ ${name || "Guest"}`;
       content={getStructuredContent(siteContent, "contact_page_content", { demoteH1: true })}
       loading={contentLoading}
       heroLabel="Contact"
+      heroImage="/logo1234.jpeg"
+      heroImageAlt="Cozy Way logo and warm contact ambience"
+      heroHighlights={[
+        { label: "Fast WhatsApp Replies", icon: MessageCircle },
+        { label: "Direct Booking Help", icon: Headphones },
+        { label: "Open For Enquiries", icon: Clock },
+      ]}
       aside={aside}
     >
       <motion.section
@@ -276,7 +285,6 @@ ${name || "Guest"}`;
               type="button"
               onClick={handleWhatsApp}
               className="rounded-full bg-[#1fa855] font-semibold text-white hover:bg-[#1b924b]"
-              disabled={!name || !email || !message}
             >
               <MessageCircle className="mr-2 h-5 w-5" />
               WhatsApp
@@ -285,7 +293,6 @@ ${name || "Guest"}`;
               type="button"
               onClick={handleEmail}
               className="rounded-full bg-[#2f5d50] font-semibold text-white hover:bg-[#294f44]"
-              disabled={!name || !email || !message}
             >
               <Mail className="mr-2 h-5 w-5" />
               Email
@@ -301,7 +308,7 @@ ${name || "Guest"}`;
           </div>
 
           <p className="text-center text-xs text-muted-foreground">
-            Fill in your name, email, and message to enable the WhatsApp and Email shortcuts.
+            You can still contact Cozy Way directly by WhatsApp, email, or phone even before filling the full form.
           </p>
         </form>
       </motion.section>

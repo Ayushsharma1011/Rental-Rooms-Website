@@ -407,17 +407,17 @@ const ManageRooms = () => {
 
   return (
     <Card className="glassmorphic-card">
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <CardTitle>Manage Rooms</CardTitle>
 
         <Dialog open={isCreateOpen} onOpenChange={setCreateOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="w-full sm:w-auto">
               <PlusCircle className="mr-2 h-4 w-4" /> Add New Room
             </Button>
           </DialogTrigger>
 
-          <DialogContent className="bg-slate-800 border-purple-500 text-white max-w-2xl">
+          <DialogContent className="max-h-[90vh] w-[95vw] overflow-y-auto border-purple-500 bg-slate-800 text-white sm:max-w-2xl">
             <DialogHeader>
               <DialogTitle>Add New Room</DialogTitle>
             </DialogHeader>
@@ -437,17 +437,17 @@ const ManageRooms = () => {
             {rooms.map((room) => (
               <div
                 key={room.id}
-                className="flex items-center justify-between p-4 rounded-lg bg-white/5"
+                className="flex flex-col gap-4 rounded-lg bg-white/5 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex min-w-0 items-center gap-3 sm:gap-4">
                   <img
                     src={room.image_url || 'https://via.placeholder.com/100'}
                     alt={room.name}
-                    className="h-16 w-16 rounded-md object-cover"
+                    className="h-16 w-16 shrink-0 rounded-md object-cover"
                   />
 
-                  <div>
-                    <p className="font-bold text-lg text-secondary">
+                  <div className="min-w-0">
+                    <p className="truncate text-base font-bold text-secondary sm:text-lg">
                       {room.name}
                     </p>
 
@@ -466,7 +466,7 @@ const ManageRooms = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex justify-end gap-2">
                   <Dialog
                     open={isEditOpen && selectedRoom?.id === room.id}
                     onOpenChange={(open) => {
@@ -487,7 +487,7 @@ const ManageRooms = () => {
                       </Button>
                     </DialogTrigger>
 
-                    <DialogContent className="bg-slate-800 border-purple-500 text-white max-w-2xl">
+                    <DialogContent className="max-h-[90vh] w-[95vw] overflow-y-auto border-purple-500 bg-slate-800 text-white sm:max-w-2xl">
                       <DialogHeader>
                         <DialogTitle>Edit Room</DialogTitle>
                       </DialogHeader>
