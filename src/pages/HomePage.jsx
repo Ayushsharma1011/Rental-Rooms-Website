@@ -37,6 +37,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { getYouTubeEmbedUrl } from '@/lib/siteContent';
 
 import { useData } from '@/contexts/DataContext';
+import Lightbox from '@/components/shared/Lightbox';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { supabase } from '@/lib/customSupabaseClient';
 
@@ -377,6 +378,8 @@ const HomePage = () => {
   const [isMobileView, setIsMobileView] = useState(false);
   const [activeShowcaseSlide, setActiveShowcaseSlide] = useState(0);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
@@ -718,16 +721,22 @@ const HomePage = () => {
             ) : showcaseSlides.length > 0 ? (
               <>
                 <Slider className="showcase-track" {...showcaseSettings}>
-                  {showcaseSlides.map((slide) => (
+                  {showcaseSlides.map((slide, index) => (
                     <div key={slide.id} className="showcase-slide px-2 sm:px-3">
-                      <div className="showcase-card relative h-[17.5rem] sm:h-[26rem] lg:h-[30rem] overflow-hidden rounded-[1.75rem] sm:rounded-[2.5rem] border border-white/60 bg-white/70 shadow-[0_35px_80px_-50px_rgba(0,0,0,0.55)]">
+                      <div
+                        onClick={() => {
+                          setLightboxIndex(index);
+                          setIsLightboxOpen(true);
+                        }}
+                        className="showcase-card group cursor-pointer relative h-[17.5rem] sm:h-[26rem] lg:h-[30rem] overflow-hidden rounded-[1.75rem] sm:rounded-[2.5rem] border border-white/60 bg-white/70 shadow-[0_35px_80px_-50px_rgba(0,0,0,0.55)]"
+                      >
                         <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-secondary/20 blur-3xl" />
                         <div className="absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
                         <div className="relative h-full w-full">
                           <img
                             src={slide.url}
                             alt={slide.alt}
-                            className="absolute inset-0 h-full w-full object-cover object-center"
+                            className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                           />
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
@@ -1230,6 +1239,15 @@ const HomePage = () => {
         room={selectedRoom}
         open={!!selectedRoom}
         onOpenChange={() => setSelectedRoom(null)}
+      />
+
+      {/* LIGHTBOX MODAL */}
+      <Lightbox
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+        images={showcaseSlides}
+        currentIndex={lightboxIndex}
+        setCurrentIndex={setLightboxIndex}
       />
     </PageTransition>
   );

@@ -5,15 +5,31 @@ import { useData } from '@/contexts/DataContext';
 import { getMetaValue, getStructuredContent } from '@/lib/siteContent';
 
 const OurJourneyPage = () => {
-  const { siteContent, galleryImages, loading } = useData();
+  const { siteContent, galleryImages = [], loading } = useData();
 
   const journeyImages = galleryImages
-    .filter((image) => String(image.category || '').toLowerCase() === 'journey')
+    .filter((image) => String(image.category || '').toLowerCase() === 'journey' && image.url)
     .map((image) => ({
       id: image.id,
       url: image.url,
       alt: image.alt || 'Cozy Way journey image',
     }));
+
+  // Partition the remaining images for balanced column rendering
+  const leftImages = [];
+  const rightImages = [];
+
+  if (journeyImages[2]) leftImages.push(journeyImages[2]);
+  if (journeyImages[3]) leftImages.push(journeyImages[3]);
+  if (journeyImages[4]) rightImages.push(journeyImages[4]);
+
+  for (let i = 5; i < journeyImages.length; i++) {
+    if (i % 2 === 1) {
+      leftImages.push(journeyImages[i]);
+    } else {
+      rightImages.push(journeyImages[i]);
+    }
+  }
 
   return (
     <ContentPageTemplate
@@ -46,7 +62,23 @@ const OurJourneyPage = () => {
           </p>
         </div>
 
-        {journeyImages.length > 0 ? (
+        {loading ? (
+          <div className="space-y-6">
+            <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+              <div className="grid gap-5">
+                <div className="animate-pulse rounded-[2rem] bg-muted h-[420px] w-full" />
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="animate-pulse rounded-[2rem] bg-muted h-64 w-full" />
+                  <div className="animate-pulse rounded-[2rem] bg-muted h-64 w-full" />
+                </div>
+              </div>
+              <div className="grid gap-5">
+                <div className="animate-pulse rounded-[2rem] bg-muted h-[360px] w-full" />
+                <div className="animate-pulse rounded-[2rem] bg-muted h-72 w-full" />
+              </div>
+            </div>
+          </div>
+        ) : journeyImages.length > 0 ? (
           <div className="space-y-6">
             <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
               <div className="grid gap-5">
@@ -55,6 +87,7 @@ const OurJourneyPage = () => {
                     <img
                       src={journeyImages[0].url}
                       alt={journeyImages[0].alt}
+                      loading="lazy"
                       className="h-full w-full min-h-[420px] object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
@@ -65,30 +98,19 @@ const OurJourneyPage = () => {
                 )}
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  {journeyImages[2] && (
-                    <figure className="group overflow-hidden rounded-[2rem] border border-white/20 bg-white/80 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.35)]">
+                  {leftImages.map((image) => (
+                    <figure key={image.id} className="group overflow-hidden rounded-[2rem] border border-white/20 bg-white/80 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.35)]">
                       <img
-                        src={journeyImages[2].url}
-                        alt={journeyImages[2].alt}
+                        src={image.url}
+                        alt={image.alt}
+                        loading="lazy"
                         className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       <div className="p-5 text-sm font-medium text-secondary">
-                        {journeyImages[2].alt}
+                        {image.alt}
                       </div>
                     </figure>
-                  )}
-                  {journeyImages[3] && (
-                    <figure className="group overflow-hidden rounded-[2rem] border border-white/20 bg-white/80 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.35)]">
-                      <img
-                        src={journeyImages[3].url}
-                        alt={journeyImages[3].alt}
-                        className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div className="p-5 text-sm font-medium text-secondary">
-                        {journeyImages[3].alt}
-                      </div>
-                    </figure>
-                  )}
+                  ))}
                 </div>
               </div>
 
@@ -98,6 +120,7 @@ const OurJourneyPage = () => {
                     <img
                       src={journeyImages[1].url}
                       alt={journeyImages[1].alt}
+                      loading="lazy"
                       className="h-full min-h-[360px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-80" />
@@ -107,18 +130,19 @@ const OurJourneyPage = () => {
                   </figure>
                 )}
 
-                {journeyImages[4] && (
-                  <figure className="group overflow-hidden rounded-[2rem] border border-white/20 bg-white/80 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.35)]">
+                {rightImages.map((image) => (
+                  <figure key={image.id} className="group overflow-hidden rounded-[2rem] border border-white/20 bg-white/80 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.35)]">
                     <img
-                      src={journeyImages[4].url}
-                      alt={journeyImages[4].alt}
+                      src={image.url}
+                      alt={image.alt}
+                      loading="lazy"
                       className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="p-5 text-sm font-medium text-secondary">
-                      {journeyImages[4].alt}
+                      {image.alt}
                     </div>
                   </figure>
-                )}
+                ))}
               </div>
             </div>
           </div>

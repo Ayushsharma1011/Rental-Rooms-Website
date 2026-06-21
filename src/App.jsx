@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/shared/Header';
@@ -43,17 +43,38 @@ function AppContent() {
 
     const timer = window.setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 4000);
 
     return () => window.clearTimeout(timer);
   }, [isAdminRoute]);
 
-  if (showSplash) {
-    return <CozywayAnimatedLogo />;
-  }
+  React.useEffect(() => {
+    if (showSplash) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showSplash]);
 
   return (
     <div className={isAdminRoute ? 'dark' : ''}>
+      <AnimatePresence>
+        {showSplash && (
+          <motion.div
+            key="splash-screen"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[9999]"
+          >
+            <CozywayAnimatedLogo />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-500">
         <Helmet>
             <title>CozyWay | My Place My Space</title>

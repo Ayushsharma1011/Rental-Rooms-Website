@@ -532,7 +532,7 @@
 @keyframes cozywaySplashFadeIn {
   from {
     opacity: 0;
-    transform: scale(0.82) rotateX(10deg);
+    transform: scale(0.95) rotateX(5deg);
   }
   to {
     opacity: 1;
