@@ -10,6 +10,7 @@ const CozywayAnimatedLogo = () => (
           src="/logo.jpg"
           alt="Cozyway Logo"
           className="cozyway-splash-logo w-72 drop-shadow-2xl md:w-96"
+          decoding="async"
         />
 
         <span className="cozyway-sparkle cozyway-sparkle-one" />

@@ -36,12 +36,12 @@ const ContactPage = () => {
   const DIRECT_EMAIL = "cozywayin@gmail.com";
 
   const carouselImages = [
-    "/gallery10.png",
-    "/gallery11.png",
-    "/gallery12.png",
-    "/gallery16.png",
-    "/gallery9.png",
-    "/gallery3.png",
+    "/optimized/gallery10.webp",
+    "/optimized/gallery11.webp",
+    "/optimized/gallery12.webp",
+    "/optimized/gallery16.webp",
+    "/optimized/gallery9.webp",
+    "/optimized/gallery3.webp",
   ];
 
   useEffect(() => {
@@ -136,6 +136,8 @@ ${name || "Guest"}`;
               exit={{ opacity: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

@@ -1,0 +1,1 @@
+import{n as a,o as n}from"./index-DZImptwB.js";const e=({children:i})=>{const t={initial:{opacity:0,y:20},animate:{opacity:1,y:0},exit:{opacity:0,y:-20}};return a.jsx(n.div,{variants:t,initial:"initial",animate:"animate",exit:"exit",transition:{duration:.5,ease:"easeInOut"},children:i})};export{e as P};

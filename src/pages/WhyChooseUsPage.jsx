@@ -111,7 +111,7 @@ const WhyChooseUsPage = () => {
           <div className="surface-card overflow-hidden shadow-xl">
             <div className="relative h-80">
               <img
-                src={whyChooseImage?.url || '/DSCN1706.JPG.jpeg'}
+                src={whyChooseImage?.url || '/optimized/DSCN1706.JPG.webp'}
                 alt={whyChooseImage?.alt || 'Cozy Way building and surroundings'}
                 className="h-full w-full object-cover"
               />

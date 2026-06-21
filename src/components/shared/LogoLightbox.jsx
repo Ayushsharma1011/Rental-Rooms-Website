@@ -12,7 +12,7 @@ const LogoLightbox = ({ imageClassName = '', containerClassName = '', alt = 'Coz
         className={containerClassName}
         aria-label="Open Cozy Way logo"
       >
-        <img src="/logo.jpg" alt={alt} className={imageClassName} />
+        <img src="/logo.jpg" alt={alt} className={imageClassName} decoding="async" />
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -22,6 +22,8 @@ const LogoLightbox = ({ imageClassName = '', containerClassName = '', alt = 'Coz
               src="/logo.jpg"
               alt={alt}
               className="max-h-[80vh] w-full object-contain"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </DialogContent>

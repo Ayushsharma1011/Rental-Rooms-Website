@@ -30,6 +30,7 @@ const ContentPageTemplate = ({
         src={heroImage}
         alt={heroImageAlt}
         className="absolute inset-0 -z-20 h-full w-full object-cover opacity-45 blur-sm scale-105"
+        decoding="async"
       />
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(13,17,15,0.92)_0%,rgba(13,17,15,0.72)_46%,rgba(13,17,15,0.38)_100%)]" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/65 via-transparent to-black/25" />
@@ -76,6 +77,7 @@ const ContentPageTemplate = ({
               src={heroImage}
               alt={heroImageAlt}
               className="aspect-[16/9] w-full rounded-[1.5rem] object-contain"
+              decoding="async"
             />
           </div>
         </div>
